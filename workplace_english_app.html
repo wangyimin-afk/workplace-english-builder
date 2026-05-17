@@ -1012,6 +1012,248 @@
       {cat:"Customer Style", term:"gentle reminder", phon:"JEN-təl ri-MYN-der", zh:"温馨提醒；礼貌催促", example:"This is a gentle reminder that the balance payment is due this Friday."}
     );
 
+    const professionalExpansionPacks = [
+      {
+        cat: "Meeting Phrases",
+        actions: [
+          ["align on", "对齐", "Let's align on {topic} before the meeting ends."],
+          ["confirm", "确认", "Could you confirm {topic} by tomorrow?"],
+          ["clarify", "澄清", "We need to clarify {topic} before moving forward."],
+          ["walk through", "逐项说明", "Could you walk us through {topic} during the call?"],
+          ["follow up on", "跟进", "I will follow up on {topic} after the meeting."],
+          ["summarize", "总结", "Let me summarize {topic} in the meeting minutes."],
+          ["revisit", "重新讨论", "We may need to revisit {topic} with the customer."],
+          ["raise a concern about", "提出担忧", "I would like to raise a concern about {topic}."],
+          ["get approval for", "获得批准", "We need to get approval for {topic} before release."],
+          ["set expectations for", "设定预期", "It is better to set expectations for {topic} early."],
+          ["agree on", "达成一致", "Can we agree on {topic} today?"],
+          ["document", "记录", "Please document {topic} in the meeting recap."]
+        ],
+        topics: [
+          ["project scope", "项目范围"], ["delivery timeline", "交付时间线"], ["commercial terms", "商务条款"], ["technical requirements", "技术要求"],
+          ["open points", "未关闭事项"], ["decision process", "决策流程"], ["approval flow", "审批流程"], ["customer expectations", "客户预期"],
+          ["risk items", "风险事项"], ["resource availability", "资源可用性"], ["drawing status", "图纸状态"], ["sample readiness", "样品准备情况"],
+          ["production release", "生产放行"], ["handover plan", "移交计划"], ["payment condition", "付款条件"], ["contract comments", "合同意见"],
+          ["change request", "变更请求"], ["quality concerns", "质量担忧"], ["next steps", "下一步"], ["meeting agenda", "会议议程"]
+        ]
+      },
+      {
+        cat: "Project Management",
+        actions: [
+          ["track", "跟踪", "We should track {topic} every week."],
+          ["monitor", "监控", "Please monitor {topic} and report any risk."],
+          ["update", "更新", "Could you update {topic} in the project tracker?"],
+          ["close", "关闭", "We need to close {topic} before the next milestone."],
+          ["escalate", "升级处理", "We may need to escalate {topic} if there is no response."],
+          ["prioritize", "优先处理", "Let's prioritize {topic} because it affects delivery."],
+          ["assign an owner for", "指定负责人", "Please assign an owner for {topic}."],
+          ["define the ETA for", "定义预计完成时间", "Could you define the ETA for {topic}?"],
+          ["prepare a recovery plan for", "准备补救计划", "Please prepare a recovery plan for {topic}."],
+          ["review the impact of", "评估影响", "We need to review the impact of {topic}."],
+          ["freeze", "冻结；定版", "We can freeze {topic} after customer approval."],
+          ["release", "发布；放行", "Please release {topic} after final verification."],
+          ["validate", "验证", "We need to validate {topic} before mass production."],
+          ["control", "控制", "The team must control {topic} to avoid extra cost."]
+        ],
+        topics: [
+          ["milestone status", "里程碑状态"], ["critical path", "关键路径"], ["open issue list", "未解决问题清单"], ["sample approval", "样品批准"],
+          ["drawing approval", "图纸批准"], ["design freeze", "设计冻结"], ["production readiness", "生产准备"], ["factory capacity", "工厂产能"],
+          ["supplier feedback", "供应商反馈"], ["customer approval", "客户批准"], ["site readiness", "现场准备"], ["installation schedule", "安装计划"],
+          ["handover date", "移交日期"], ["testing progress", "测试进度"], ["documentation package", "文件包"], ["resource plan", "资源计划"],
+          ["risk register", "风险登记表"], ["dependency list", "依赖清单"], ["change log", "变更记录"], ["issue owner", "问题负责人"],
+          ["delivery risk", "交付风险"], ["cost impact", "成本影响"], ["quality gate", "质量关卡"], ["launch plan", "上线计划"], ["weekly report", "周报"]
+        ]
+      },
+      {
+        cat: "Elevator Technical",
+        actions: [
+          ["verify", "验证", "Please verify {topic} against the site drawing."],
+          ["confirm", "确认", "Could you confirm {topic} with the consultant?"],
+          ["check", "检查", "We need to check {topic} before final quotation."],
+          ["calculate", "计算", "The engineer will calculate {topic} based on the layout."],
+          ["review", "评审", "Please review {topic} before we release the drawing."],
+          ["specify", "明确规定", "The tender should specify {topic} clearly."],
+          ["comply with", "符合", "The design must comply with {topic}."],
+          ["adjust", "调整", "We may need to adjust {topic} according to site conditions."],
+          ["inspect", "检查；验收", "The site team will inspect {topic} during commissioning."],
+          ["document", "记录", "Please document {topic} in the technical file."],
+          ["approve", "批准", "The customer needs to approve {topic} before production."],
+          ["coordinate", "协调", "We should coordinate {topic} with the civil contractor."],
+          ["finalize", "最终确定", "Let's finalize {topic} after receiving the revised drawing."],
+          ["test", "测试", "We need to test {topic} before handover."],
+          ["install", "安装", "The technician will install {topic} according to the manual."],
+          ["commission", "调试", "We will commission {topic} after installation."],
+          ["troubleshoot", "排查故障", "The engineer needs to troubleshoot {topic} on site."],
+          ["replace", "更换", "Please replace {topic} if the component fails inspection."]
+        ],
+        topics: [
+          ["car operating panel", "轿厢操纵盘"], ["landing operating panel", "厅外召唤盒"], ["hall call button", "厅外呼梯按钮"], ["braille button", "盲文按钮"],
+          ["destination control system", "目的楼层控制系统"], ["accessibility requirement", "无障碍要求"], ["EN 81-70 requirement", "EN 81-70 要求"], ["shaft dimension", "井道尺寸"],
+          ["pit depth", "底坑深度"], ["overhead clearance", "顶层高度"], ["travel height", "提升高度"], ["rated load", "额定载重"],
+          ["rated speed", "额定速度"], ["door opening width", "门洞宽度"], ["center opening door", "中分门"], ["side opening door", "旁开门"],
+          ["machine-room-less layout", "无机房布局"], ["guide rail bracket", "导轨支架"], ["buffer stroke", "缓冲器行程"], ["overspeed governor", "限速器"],
+          ["safety gear", "安全钳"], ["traction machine", "曳引机"], ["control cabinet", "控制柜"], ["emergency power operation", "应急电源运行"],
+          ["fire recall function", "消防迫降功能"], ["intercom system", "对讲系统"], ["landing indicator", "厅外显示器"], ["car lighting", "轿厢照明"],
+          ["door detector", "门保护装置"], ["load weighing device", "称重装置"]
+        ]
+      },
+      {
+        cat: "Delivery & Logistics",
+        actions: [
+          ["arrange", "安排", "We will arrange {topic} after payment is confirmed."],
+          ["book", "预订", "Please book {topic} with your forwarder."],
+          ["confirm", "确认", "Could you confirm {topic} before dispatch?"],
+          ["prepare", "准备", "The logistics team will prepare {topic} today."],
+          ["issue", "开具；签发", "We will issue {topic} after shipment."],
+          ["revise", "修改", "Please revise {topic} according to the consignee details."],
+          ["share", "分享；发送", "Could you share {topic} with us by email?"],
+          ["submit", "提交", "The broker needs to submit {topic} for customs clearance."],
+          ["release", "放行", "We can release {topic} after final inspection."],
+          ["split", "拆分", "We may need to split {topic} into two batches."],
+          ["track", "追踪", "Please track {topic} and update the ETA."],
+          ["delay", "延迟", "Bad weather may delay {topic}."],
+          ["expedite", "加急", "Can we expedite {topic} for this urgent project?"],
+          ["consolidate", "合并", "It may reduce cost if we consolidate {topic}."]
+        ],
+        topics: [
+          ["shipment schedule", "发货计划"], ["packing list", "装箱单"], ["commercial invoice", "商业发票"], ["proforma invoice", "形式发票"],
+          ["shipping mark", "唛头"], ["bill of lading", "提单"], ["air waybill", "空运单"], ["container booking", "订舱"],
+          ["customs declaration", "报关"], ["customs clearance", "清关"], ["HS code", "海关编码"], ["certificate of origin", "原产地证"],
+          ["freight quotation", "运费报价"], ["delivery window", "交付窗口"], ["partial shipment", "分批发货"], ["final inspection", "最终检验"],
+          ["warehouse release", "仓库放行"], ["forwarder contact", "货代联系人"], ["consignee details", "收货人信息"], ["import duty", "进口关税"],
+          ["DAP delivery", "DAP 交货"], ["DDP delivery", "DDP 交货"], ["EXW pickup", "EXW 提货"], ["FOB shipment", "FOB 发货"]
+        ]
+      },
+      {
+        cat: "Finance & Payment",
+        actions: [
+          ["confirm", "确认", "Please confirm {topic} with your finance team."],
+          ["settle", "结清", "The customer needs to settle {topic} before shipment."],
+          ["issue", "开具", "We can issue {topic} after order confirmation."],
+          ["revise", "修改", "Please revise {topic} according to the agreed price."],
+          ["split", "拆分", "Could you split {topic} by product and freight?"],
+          ["deduct", "扣除", "Please do not deduct {topic} from the invoice amount."],
+          ["waive", "免除", "We cannot waive {topic} under the current order value."],
+          ["include", "包含", "Does the price include {topic}?"],
+          ["exclude", "不包含", "The quotation excludes {topic} unless otherwise stated."],
+          ["allocate", "分摊", "We need to allocate {topic} to the correct project code."],
+          ["reconcile", "核对", "Finance will reconcile {topic} after receiving the bank slip."],
+          ["approve", "批准", "Management must approve {topic} before we offer credit."],
+          ["release", "放行", "We can release the shipment after receiving {topic}."]
+        ],
+        topics: [
+          ["down payment", "预付款"], ["balance payment", "尾款"], ["payment term", "付款条款"], ["credit limit", "信用额度"],
+          ["bank charges", "银行手续费"], ["VAT amount", "增值税金额"], ["tax included price", "含税价"], ["VAT excluded price", "不含税价"],
+          ["overdue payment", "逾期款"], ["proforma invoice", "形式发票"], ["commercial invoice", "商业发票"], ["payment receipt", "收款凭证"],
+          ["bank slip", "银行水单"], ["exchange rate", "汇率"], ["currency fluctuation", "汇率波动"], ["discount approval", "折扣批准"],
+          ["deposit receipt", "定金到账"], ["service fee", "服务费"], ["freight charge", "运费"], ["insurance cost", "保险费"]
+        ]
+      },
+      {
+        cat: "Contracts & Legal",
+        actions: [
+          ["review", "审阅", "Please review {topic} with your legal team."],
+          ["clarify", "澄清", "We need to clarify {topic} before signing."],
+          ["revise", "修改", "Could you revise {topic} according to our comments?"],
+          ["accept", "接受", "We can accept {topic} if the wording is balanced."],
+          ["reject", "拒绝", "We have to reject {topic} due to high risk."],
+          ["negotiate", "谈判", "Let's negotiate {topic} in the next call."],
+          ["define", "定义", "The contract should define {topic} clearly."],
+          ["limit", "限制", "We need to limit {topic} to direct damages only."],
+          ["extend", "延长", "The customer requested to extend {topic}."],
+          ["apply", "适用", "This clause may apply to {topic}."],
+          ["exclude", "排除", "We should exclude {topic} from our responsibility."],
+          ["attach", "附上", "Please attach {topic} as an appendix."]
+        ],
+        topics: [
+          ["scope of supply", "供货范围"], ["warranty period", "质保期"], ["liability cap", "责任上限"], ["liquidated damages", "违约金"],
+          ["force majeure clause", "不可抗力条款"], ["termination clause", "终止条款"], ["confidentiality obligation", "保密义务"], ["governing law", "适用法律"],
+          ["dispute resolution", "争议解决"], ["acceptance criteria", "验收标准"], ["change order process", "变更单流程"], ["payment condition", "付款条件"],
+          ["delivery responsibility", "交付责任"], ["installation responsibility", "安装责任"], ["site condition", "现场条件"], ["documentation requirement", "文件要求"],
+          ["intellectual property", "知识产权"], ["compliance requirement", "合规要求"], ["delay penalty", "延期罚款"], ["contract appendix", "合同附件"]
+        ]
+      },
+      {
+        cat: "Negotiation",
+        actions: [
+          ["push back on", "反向争取；拒绝", "We may need to push back on {topic} politely."],
+          ["offer a concession on", "在某方面让步", "We can offer a concession on {topic} if the volume increases."],
+          ["hold firm on", "坚持", "We should hold firm on {topic} because the risk is high."],
+          ["trade off", "权衡交换", "We can trade off {topic} against faster approval."],
+          ["improve", "改善", "Can the customer improve {topic} to support the discount?"],
+          ["justify", "证明合理性", "We need to justify {topic} with cost data."],
+          ["benchmark", "对标", "Let's benchmark {topic} against market practice."],
+          ["reconsider", "重新考虑", "We can reconsider {topic} after scope confirmation."],
+          ["bundle", "打包", "We can bundle {topic} with after-sales support."],
+          ["make a counteroffer on", "针对某项还盘", "We will make a counteroffer on {topic} today."]
+        ],
+        topics: [
+          ["target price", "目标价格"], ["discount level", "折扣水平"], ["order quantity", "订单数量"], ["payment term", "付款条款"],
+          ["delivery time", "交货时间"], ["warranty extension", "质保延长"], ["free spare parts", "免费备件"], ["technical support", "技术支持"],
+          ["installation cost", "安装费用"], ["freight cost", "运费"], ["NRE charge", "一次性工程费"], ["tooling fee", "模具费"],
+          ["minimum order quantity", "最小起订量"], ["contract risk", "合同风险"], ["service scope", "服务范围"], ["long-term cooperation", "长期合作"]
+        ]
+      },
+      {
+        cat: "Customer Communication",
+        actions: [
+          ["kindly confirm", "请确认", "Kindly confirm {topic} so that we can proceed."],
+          ["please advise on", "请告知", "Please advise on {topic} at your earliest convenience."],
+          ["for your reference", "供你参考", "I attached {topic} for your reference."],
+          ["as discussed", "如已讨论", "As discussed, we will update {topic} by Friday."],
+          ["gentle reminder for", "礼貌提醒", "This is a gentle reminder for {topic}."],
+          ["to avoid misunderstanding about", "为避免误解", "To avoid misunderstanding about {topic}, let me confirm it in writing."],
+          ["we appreciate your feedback on", "感谢反馈", "We appreciate your feedback on {topic}."],
+          ["could you elaborate on", "请详细说明", "Could you elaborate on {topic} during the call?"],
+          ["we are ready to proceed with", "准备推进", "We are ready to proceed with {topic} after confirmation."],
+          ["we need your approval for", "需要批准", "We need your approval for {topic} to keep the schedule."],
+          ["please find attached", "请查收附件", "Please find attached {topic} for your review."],
+          ["let us know your preference on", "请告知偏好", "Please let us know your preference on {topic}."]
+        ],
+        topics: [
+          ["the revised quotation", "修订报价"], ["the updated drawing", "更新图纸"], ["the delivery plan", "交付计划"], ["the payment schedule", "付款计划"],
+          ["the contract comments", "合同意见"], ["the technical proposal", "技术方案"], ["the test report", "测试报告"], ["the packing details", "包装细节"],
+          ["the shipping documents", "运输文件"], ["the installation plan", "安装计划"], ["the project timeline", "项目时间线"], ["the open issue list", "未关闭问题清单"],
+          ["the customer requirements", "客户要求"], ["the tender specification", "招标规格"], ["the compliance documents", "合规文件"], ["the handover package", "移交文件包"],
+          ["the meeting minutes", "会议纪要"], ["the action item list", "行动项清单"], ["the final offer", "最终报价"], ["the next shipment", "下一批发货"]
+        ]
+      }
+    ];
+
+    function expandProfessionalTerms(targetTotal) {
+      const seen = new Set(terms.map((item) => item.term.toLowerCase()));
+      const queues = professionalExpansionPacks.map((pack) => {
+        const items = [];
+        for (const [action, actionZh, sentence] of pack.actions) {
+          for (const [topic, topicZh] of pack.topics) {
+            const term = `${action} ${topic}`;
+            items.push({
+              cat: pack.cat,
+              term,
+              phon: "",
+              zh: `${actionZh}${topicZh}`,
+              example: sentence.replaceAll("{topic}", topic)
+            });
+          }
+        }
+        return items;
+      });
+
+      while (terms.length < targetTotal && queues.some((queue) => queue.length)) {
+        for (const queue of queues) {
+          if (terms.length >= targetTotal) return;
+          const item = queue.shift();
+          if (!item) continue;
+          const key = item.term.toLowerCase();
+          if (seen.has(key)) continue;
+          seen.add(key);
+          terms.push(item);
+        }
+      }
+    }
+
+    expandProfessionalTerms(2000);
+
     Object.keys(phraseGroups).forEach((key) => delete phraseGroups[key]);
     Object.assign(phraseGroups, {
       "Meetings": [

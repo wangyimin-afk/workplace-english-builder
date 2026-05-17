@@ -1,4 +1,4 @@
-const CACHE_NAME = "workplace-english-v2";
+const CACHE_NAME = "workplace-english-v3";
 const ASSETS = [
   "./",
   "./index.html",
