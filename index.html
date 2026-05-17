@@ -1,0 +1,1194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workplace English Builder</title>
+  <meta name="theme-color" content="#116a63" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Work English" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="workplace-english-icon.svg" />
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f2;
+      --panel: #ffffff;
+      --panel-2: #f0f4f7;
+      --text: #172026;
+      --muted: #5d6972;
+      --line: #d9e0de;
+      --brand: #116a63;
+      --brand-2: #245c92;
+      --accent: #b85626;
+      --ok: #1f7a4d;
+      --warn: #a35c00;
+      --bad: #b3382c;
+      --shadow: 0 18px 42px rgba(25, 38, 52, .10);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px 18px;
+      background: #fcfdfb;
+      border-right: 1px solid var(--line);
+      overflow: auto;
+    }
+
+    main {
+      min-width: 0;
+      padding: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: var(--brand);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 22px rgba(17, 106, 99, .24);
+    }
+
+    .logo svg {
+      width: 26px;
+      height: 26px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.15;
+    }
+
+    .brand p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .nav button,
+    .small-btn,
+    .primary-btn,
+    .ghost-btn {
+      min-height: 40px;
+      border-radius: var(--radius);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 12px;
+      transition: transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+    }
+
+    .nav button {
+      justify-content: flex-start;
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .nav button:hover,
+    .nav button.active {
+      background: #e7f1ee;
+      color: var(--brand);
+    }
+
+    .nav svg,
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: 0 0 auto;
+    }
+
+    .side-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: var(--panel);
+    }
+
+    .side-panel + .side-panel { margin-top: 12px; }
+
+    .side-panel h2 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meter {
+      height: 9px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #e2e7e5;
+      margin: 10px 0 8px;
+    }
+
+    .meter span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--brand);
+      transition: width .25s ease;
+    }
+
+    .tiny {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .title h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 38px);
+      line-height: 1.05;
+    }
+
+    .title p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.5;
+    }
+
+    .search {
+      min-width: min(360px, 100%);
+      position: relative;
+    }
+
+    .search input {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0 42px 0 14px;
+      background: var(--panel);
+      color: var(--text);
+      outline: none;
+    }
+
+    .search svg {
+      position: absolute;
+      right: 13px;
+      top: 13px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-bottom: 14px;
+    }
+
+    .stat,
+    .card,
+    .tool {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .stat {
+      min-height: 112px;
+      padding: 16px;
+      display: grid;
+      align-content: space-between;
+    }
+
+    .stat b {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .workspace {
+      grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
+      align-items: start;
+    }
+
+    .tool {
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .tool h3 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .tabs button {
+      min-height: 36px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--muted);
+      padding: 0 13px;
+    }
+
+    .tabs button.active {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+    }
+
+    .card-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      padding: 15px;
+      box-shadow: none;
+      min-height: 180px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .term {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.15;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 0 9px;
+      background: #eef4f1;
+      color: var(--brand);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .meaning {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .example {
+      border-left: 3px solid var(--accent);
+      padding-left: 10px;
+      color: #29343b;
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .primary-btn {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .ghost-btn,
+    .small-btn {
+      background: #edf2f0;
+      color: var(--text);
+    }
+
+    .primary-btn:hover,
+    .ghost-btn:hover,
+    .small-btn:hover,
+    .nav button:hover {
+      transform: translateY(-1px);
+    }
+
+    .small-btn {
+      min-height: 34px;
+      padding: 0 10px;
+      font-size: 13px;
+    }
+
+    .flashcard {
+      min-height: 330px;
+      padding: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: grid;
+      align-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blueprint {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 240px;
+      max-width: 45%;
+      opacity: .14;
+      color: var(--brand-2);
+      pointer-events: none;
+    }
+
+    .flash-term {
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: .98;
+      margin: 30px 0 14px;
+      max-width: 720px;
+    }
+
+    .phonetic {
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .hidden-meaning {
+      min-height: 88px;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: var(--radius);
+      background: var(--panel-2);
+      line-height: 1.55;
+      color: var(--muted);
+      filter: blur(5px);
+      user-select: none;
+      transition: filter .18s ease;
+    }
+
+    .hidden-meaning.revealed {
+      filter: none;
+      user-select: auto;
+    }
+
+    .phrase-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .phrase {
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      display: grid;
+      gap: 7px;
+    }
+
+    .phrase b {
+      line-height: 1.35;
+    }
+
+    .phrase span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .quiz-options button {
+      min-height: 48px;
+      text-align: left;
+      justify-content: flex-start;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 0 14px;
+      color: var(--text);
+    }
+
+    .quiz-options button.correct {
+      border-color: var(--ok);
+      background: #e9f6ef;
+      color: var(--ok);
+    }
+
+    .quiz-options button.wrong {
+      border-color: var(--bad);
+      background: #fff0ee;
+      color: var(--bad);
+    }
+
+    .textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      padding: 12px;
+      outline: none;
+      background: #fff;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .coach-output {
+      margin-top: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .check-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .check-item input {
+      width: 18px;
+      height: 18px;
+      margin-top: 1px;
+      accent-color: var(--brand);
+      flex: 0 0 auto;
+    }
+
+    .template {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .template-header {
+      min-height: 40px;
+      padding: 10px 12px;
+      background: #eef4f7;
+      font-weight: 700;
+    }
+
+    .template-body {
+      padding: 12px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    .empty {
+      padding: 32px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: static;
+        height: auto;
+        padding: 16px;
+      }
+
+      .nav {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .topbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .stats,
+      .workspace,
+      .card-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      main {
+        padding: 16px;
+      }
+
+      .nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .nav button {
+        justify-content: center;
+        padding: 0 8px;
+      }
+
+      .stat {
+        min-height: 92px;
+      }
+
+      .flashcard {
+        min-height: 370px;
+      }
+
+      .actions button {
+        flex: 1 1 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h11a3 3 0 0 1 3 3v14H6a2 2 0 0 1-2-2.5Z"/><path d="M8 7h7M8 11h8M8 15h5"/></svg>
+        </div>
+        <div>
+          <h1>Workplace English Builder</h1>
+          <p>Daily + technical + business English</p>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <button class="active" data-section="dashboard">
+          <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10ZM13 21h8V11h-8v10ZM13 3v6h8V3h-8ZM3 21h8v-6H3v6Z"/></svg>
+          Dashboard
+        </button>
+        <button data-section="flashcards">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+          Flashcards
+        </button>
+        <button data-section="phrases">
+          <svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z"/></svg>
+          Phrases
+        </button>
+        <button data-section="quiz">
+          <svg viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 1 5.2 2c-.8.7-1.2 1.1-1.2 2v1"/><path d="M12 20h.01"/><circle cx="12" cy="12" r="10"/></svg>
+          Quiz
+        </button>
+        <button data-section="coach">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"/></svg>
+          Speaking
+        </button>
+        <button data-section="templates">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
+          Templates
+        </button>
+      </nav>
+
+      <div class="side-panel">
+        <h2>Progress</h2>
+        <div class="meter"><span id="progressBar"></span></div>
+        <div class="tiny"><b id="knownCount">0</b> terms marked familiar. Build a practical vocabulary base for work conversations.</div>
+      </div>
+
+      <div class="side-panel">
+        <h2>Daily Routine</h2>
+        <div class="tiny">1. Learn 8 words.<br>2. Read 5 phrases aloud.<br>3. Rewrite one work message.<br>4. Review yesterday's unfamiliar terms.</div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="topbar">
+        <div class="title">
+          <h2 id="pageTitle">Dashboard</h2>
+          <p id="pageSubtitle">A focused English practice app for workplace meetings, engineering discussions, finance terms, trade terms, and daily speaking.</p>
+        </div>
+        <div class="search">
+          <input id="searchInput" placeholder="Search terms, phrases, examples..." />
+          <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+      </div>
+
+      <section id="dashboard" class="section active">
+        <div class="grid stats">
+          <div class="stat"><span>Total terms</span><b id="termTotal">0</b></div>
+          <div class="stat"><span>Work phrases</span><b id="phraseTotal">0</b></div>
+          <div class="stat"><span>Quiz score</span><b id="scoreStat">0%</b></div>
+          <div class="stat"><span>Today target</span><b>15m</b></div>
+        </div>
+
+        <div class="grid workspace">
+          <div class="tool">
+            <h3>Recommended Path</h3>
+            <div class="phrase-list">
+              <div class="phrase"><b>Stage 1: daily confidence</b><span>Objects, requests, polite clarification, simple opinions, and common verbs.</span></div>
+              <div class="phrase"><b>Stage 2: workplace fluency</b><span>Kickoff meetings, schedules, delivery, follow-up, reporting blockers, and asking for confirmation.</span></div>
+              <div class="phrase"><b>Stage 3: technical accuracy</b><span>Electrical terms, mechanical words, schematic discussion, verification, qualification, compliance, and standards.</span></div>
+              <div class="phrase"><b>Stage 4: business precision</b><span>Finance, taxable/non-taxable language, DAP/DDP/EXW trade terms, quotations, invoices, and negotiation.</span></div>
+            </div>
+          </div>
+
+          <div class="tool">
+            <h3>Today's Drill</h3>
+            <div id="dailyDrill" class="phrase-list"></div>
+            <div class="actions" style="margin-top: 12px;">
+              <button class="primary-btn" id="startDaily">
+                <svg class="btn-icon" viewBox="0 0 24 24"><path d="m5 3 14 9-14 9V3Z"/></svg>
+                Start Flashcards
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="flashcards" class="section">
+        <div class="tabs" id="categoryTabs"></div>
+        <div class="flashcard">
+          <svg class="blueprint" viewBox="0 0 240 180" aria-hidden="true">
+            <path d="M20 30h80v40H20zM140 24h70v70h-70zM70 122h120v34H70z" fill="none" stroke="currentColor" stroke-width="4"/>
+            <path d="M100 50h40M175 94v28M70 70v52M46 30V12M74 30V12M46 70v24M74 70v24M140 46h-22M210 46h18M140 72h-22M210 72h18" fill="none" stroke="currentColor" stroke-width="4"/>
+            <circle cx="32" cy="122" r="10" fill="none" stroke="currentColor" stroke-width="4"/>
+            <circle cx="210" cy="139" r="10" fill="none" stroke="currentColor" stroke-width="4"/>
+          </svg>
+          <div>
+            <div class="tag" id="flashCategory">Category</div>
+            <div class="flash-term" id="flashTerm">Term</div>
+            <div class="phonetic" id="flashPhonetic"></div>
+            <div class="hidden-meaning" id="flashMeaning"></div>
+          </div>
+          <div class="actions">
+            <button class="primary-btn" id="speakFlash">
+              <svg class="btn-icon" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+              Listen
+            </button>
+            <button class="ghost-btn" id="revealFlash">
+              <svg class="btn-icon" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              Reveal
+            </button>
+            <button class="ghost-btn" id="markKnown">
+              <svg class="btn-icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+              I know it
+            </button>
+            <button class="ghost-btn" id="nextFlash">
+              <svg class="btn-icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              Next
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="phrases" class="section">
+        <div class="tabs" id="phraseTabs"></div>
+        <div class="card-list" id="phraseCards"></div>
+      </section>
+
+      <section id="quiz" class="section">
+        <div class="grid workspace">
+          <div class="tool">
+            <h3>Meaning Quiz</h3>
+            <div class="tag" id="quizCategory">Category</div>
+            <h2 id="quizQuestion" style="margin: 14px 0 0;">Question</h2>
+            <div class="quiz-options" id="quizOptions"></div>
+            <div class="actions" style="margin-top: 14px;">
+              <button class="primary-btn" id="nextQuiz">Next question</button>
+            </div>
+          </div>
+          <div class="tool">
+            <h3>Quiz Focus</h3>
+            <div class="tiny">Choose the best Chinese meaning or workplace usage. The goal is fast recognition in meetings, emails, technical calls, and quotation discussions.</div>
+            <div class="meter"><span id="quizMeter"></span></div>
+            <div class="tiny"><b id="quizScore">0</b> correct out of <b id="quizAttempts">0</b> attempts.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="coach" class="section">
+        <div class="grid workspace">
+          <div class="tool">
+            <h3>Rewrite Practice</h3>
+            <textarea class="textarea" id="rewriteInput" placeholder="Write your sentence here, for example: I want advise you hear me create app."></textarea>
+            <div class="actions" style="margin-top: 10px;">
+              <button class="primary-btn" id="coachBtn">Improve sentence</button>
+              <button class="ghost-btn" id="sampleBtn">Use sample</button>
+            </div>
+            <div class="coach-output" id="coachOutput"></div>
+          </div>
+          <div class="tool">
+            <h3>Speaking Checklist</h3>
+            <label class="check-item"><input type="checkbox" /> I can explain my purpose in one clear sentence.</label>
+            <label class="check-item"><input type="checkbox" /> I can ask someone to repeat or clarify politely.</label>
+            <label class="check-item"><input type="checkbox" /> I can describe a schedule, risk, and next step.</label>
+            <label class="check-item"><input type="checkbox" /> I can discuss a technical issue using precise nouns and verbs.</label>
+            <label class="check-item"><input type="checkbox" /> I can confirm tax, delivery term, price, and responsibility.</label>
+          </div>
+        </div>
+      </section>
+
+      <section id="templates" class="section">
+        <div class="card-list" id="templateCards"></div>
+      </section>
+
+      <section id="searchResults" class="section">
+        <div class="tool">
+          <h3>Search Results</h3>
+          <div class="card-list" id="resultCards"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const terms = [
+      {cat:"Daily", term:"kettle", phon:"KET-l", zh:"水壶", example:"Could you fill the kettle before the meeting starts?"},
+      {cat:"Daily", term:"desk", phon:"desk", zh:"办公桌", example:"I left the sample on your desk."},
+      {cat:"Daily", term:"laptop", phon:"LAP-top", zh:"笔记本电脑", example:"My laptop is connected to the projector."},
+      {cat:"Daily", term:"vertical", phon:"VER-ti-kəl", zh:"垂直的；纵向的", example:"Please keep the label vertical on the package."},
+      {cat:"Daily", term:"anywhere", phon:"EN-ee-wair", zh:"任何地方", example:"You can place the spare chairs anywhere near the wall."},
+      {cat:"Core Verbs", term:"qualify", phon:"KWAH-li-fy", zh:"使具备资格；验证达到要求", example:"The supplier must qualify the new connector before mass production."},
+      {cat:"Core Verbs", term:"verify", phon:"VER-i-fy", zh:"验证；确认", example:"Please verify the voltage before we release the report."},
+      {cat:"Core Verbs", term:"schedule", phon:"SKEH-jool", zh:"安排；日程", example:"Can we schedule the kickoff meeting for next Tuesday?"},
+      {cat:"Core Verbs", term:"promote", phon:"pruh-MOHT", zh:"推广；晋升；促进", example:"This campaign will promote the new accessory line."},
+      {cat:"Core Verbs", term:"inspire", phon:"in-SPY-er", zh:"激励；启发", example:"The design should inspire confidence in business users."},
+      {cat:"Core Verbs", term:"investigate", phon:"in-VES-ti-gayt", zh:"调查；研究原因", example:"We need to investigate why the current drops under load."},
+      {cat:"Core Verbs", term:"implement", phon:"IM-pluh-ment", zh:"实施；落地执行", example:"The team will implement the firmware update this week."},
+      {cat:"Workplace", term:"presentation", phon:"prez-en-TAY-shən", zh:"演示；汇报", example:"I prepared a short presentation about the test results."},
+      {cat:"Workplace", term:"kickoff meeting", phon:"KIK-off MEE-ting", zh:"启动会", example:"The kickoff meeting will define scope, owners, and timeline."},
+      {cat:"Workplace", term:"deliverable", phon:"di-LIV-er-uh-bəl", zh:"交付物", example:"The final deliverable is a verified prototype and test summary."},
+      {cat:"Workplace", term:"timeline", phon:"TYM-line", zh:"时间线；进度安排", example:"The timeline is tight, so we need daily updates."},
+      {cat:"Workplace", term:"blocker", phon:"BLOK-er", zh:"阻碍事项", example:"The missing sample is the main blocker for validation."},
+      {cat:"Engineering", term:"capacitive", phon:"kuh-PAS-i-tiv", zh:"电容式的；电容性的", example:"The capacitive touch sensor is too sensitive in humid conditions."},
+      {cat:"Engineering", term:"schematic", phon:"ski-MAT-ik", zh:"原理图", example:"Please review the schematic before the PCB layout starts."},
+      {cat:"Engineering", term:"mechanical", phon:"muh-KAN-i-kəl", zh:"机械的；结构的", example:"The mechanical tolerance may affect the button feel."},
+      {cat:"Engineering", term:"tolerance", phon:"TOL-er-əns", zh:"公差；容差", example:"The housing tolerance is plus or minus 0.1 millimeter."},
+      {cat:"Engineering", term:"prototype", phon:"PROH-tuh-type", zh:"原型；样机", example:"We need three prototypes for the customer demo."},
+      {cat:"Engineering", term:"validation", phon:"val-i-DAY-shən", zh:"验证；有效性确认", example:"Validation should include thermal, electrical, and mechanical tests."},
+      {cat:"Engineering", term:"compliance", phon:"kəm-PLY-əns", zh:"合规；符合标准", example:"The product must meet compliance requirements before shipment."},
+      {cat:"Engineering", term:"standard", phon:"STAN-derd", zh:"标准", example:"Which EN standard applies to this product category?"},
+      {cat:"Engineering", term:"PCB", phon:"P-C-B", zh:"印刷电路板", example:"The PCB layout should keep the power trace short and wide."},
+      {cat:"Engineering", term:"BOM", phon:"B-O-M", zh:"物料清单", example:"Please update the BOM after changing the connector supplier."},
+      {cat:"Engineering", term:"firmware", phon:"FERM-wair", zh:"固件", example:"The firmware update fixed the charging detection issue."},
+      {cat:"Engineering", term:"current", phon:"KUR-ənt", zh:"电流", example:"The current should remain stable during the load test."},
+      {cat:"Engineering", term:"voltage", phon:"VOHL-tij", zh:"电压", example:"The output voltage is within the expected range."},
+      {cat:"Engineering", term:"thermal", phon:"THER-məl", zh:"热的；散热相关的", example:"We need a thermal test before approving the enclosure design."},
+      {cat:"Standards", term:"GB standard", phon:"G-B STAN-derd", zh:"国标；中国国家标准", example:"Does this product need to comply with a GB standard?"},
+      {cat:"Standards", term:"EN 81-70", phon:"E-N eighty-one seventy", zh:"欧洲无障碍电梯相关标准常见写法之一；具体适用性需按产品确认", example:"Please confirm whether EN 81-70 is required for this elevator project."},
+      {cat:"Standards", term:"certification", phon:"ser-ti-fi-KAY-shən", zh:"认证", example:"The customer asked for certification documents before approval."},
+      {cat:"Standards", term:"test report", phon:"test ri-PORT", zh:"测试报告", example:"Please attach the test report to the compliance package."},
+      {cat:"Standards", term:"requirement", phon:"ri-KWY-er-mənt", zh:"要求；需求", example:"This requirement must be confirmed before the design freeze."},
+      {cat:"Business", term:"competitor", phon:"kəm-PET-i-ter", zh:"竞争对手", example:"Our competitor offers a lower price but a shorter warranty."},
+      {cat:"Business", term:"cooperation", phon:"koh-op-er-AY-shən", zh:"合作", example:"We value long-term cooperation with reliable suppliers."},
+      {cat:"Business", term:"lead time", phon:"leed time", zh:"交期；生产周期", example:"What is the lead time for 5,000 units?"},
+      {cat:"Business", term:"MOQ", phon:"M-O-Q", zh:"最小起订量", example:"The MOQ is too high for the trial order."},
+      {cat:"Business", term:"NRE cost", phon:"N-R-E cost", zh:"一次性工程费用；开发费", example:"Is the tooling fee included in the NRE cost?"},
+      {cat:"Finance & Trade", term:"tax included", phon:"taks in-KLOO-did", zh:"含税", example:"Is this price tax included or before tax?"},
+      {cat:"Finance & Trade", term:"tax exempt", phon:"taks ig-ZEMPT", zh:"免税", example:"This transaction may be tax exempt if the required documents are provided."},
+      {cat:"Finance & Trade", term:"VAT", phon:"V-A-T", zh:"增值税", example:"Please show the VAT amount separately on the invoice."},
+      {cat:"Finance & Trade", term:"import duty", phon:"IM-port DOO-tee", zh:"进口关税", example:"Who will pay the import duty under this trade term?"},
+      {cat:"Finance & Trade", term:"customs clearance", phon:"KUS-təmz KLEER-əns", zh:"清关", example:"The buyer is responsible for customs clearance under DAP."},
+      {cat:"Finance & Trade", term:"HS code", phon:"H-S code", zh:"海关编码", example:"Please confirm the HS code before shipment."},
+      {cat:"Finance & Trade", term:"invoice", phon:"IN-voys", zh:"发票", example:"Please issue the invoice after payment is confirmed."},
+      {cat:"Finance & Trade", term:"quotation", phon:"kwoh-TAY-shən", zh:"报价单", example:"Could you send an updated quotation with the DDP price?"},
+      {cat:"Finance & Trade", term:"DAP", phon:"D-A-P", zh:"目的地交货；卖方送到指定地点，进口清关和税费通常买方负责", example:"For DAP terms, please confirm who handles import duty."},
+      {cat:"Finance & Trade", term:"DDP", phon:"D-D-P", zh:"完税后交货；卖方通常承担进口税费和送达责任", example:"The customer prefers DDP because it includes duty and delivery."},
+      {cat:"Finance & Trade", term:"EXW", phon:"E-X-W", zh:"工厂交货；买方承担提货和运输责任", example:"EXW is cheaper, but the buyer must arrange pickup and export handling."}
+    ];
+
+    const phraseGroups = {
+      "Daily": [
+        ["Could you say that again, please?", "请你再说一遍好吗？"],
+        ["Let me confirm my understanding.", "我确认一下我的理解。"],
+        ["I am not familiar with this term yet.", "我还不熟悉这个术语。"],
+        ["Could you give me a simple example?", "你能给我一个简单例子吗？"]
+      ],
+      "Meetings": [
+        ["Let's align on the scope, timeline, and owners.", "我们先对齐范围、时间线和负责人。"],
+        ["What are the key deliverables for this project?", "这个项目的关键交付物是什么？"],
+        ["I see one blocker that may affect the schedule.", "我看到一个可能影响进度的阻碍。"],
+        ["I will follow up with the test result by Friday.", "我会在周五前跟进测试结果。"]
+      ],
+      "Engineering": [
+        ["The schematic looks correct, but we still need to verify the layout.", "原理图看起来正确，但仍需验证布局。"],
+        ["The capacitive sensor may need recalibration.", "电容式传感器可能需要重新校准。"],
+        ["The mechanical tolerance is too tight for mass production.", "这个机械公差对量产来说太紧。"],
+        ["Please investigate whether the issue is hardware or firmware related.", "请调查问题是硬件相关还是固件相关。"]
+      ],
+      "Standards": [
+        ["Which standard or certification does this market require?", "这个市场要求哪个标准或认证？"],
+        ["Please confirm whether the GB standard applies to this product.", "请确认该国标是否适用于这个产品。"],
+        ["We need the test report before the compliance review.", "合规评审前我们需要测试报告。"],
+        ["The requirement is unclear, so I suggest we verify it with the customer.", "这个要求不清楚，所以我建议向客户确认。"]
+      ],
+      "Finance & Trade": [
+        ["Is the quotation tax included or before tax?", "报价是含税还是税前？"],
+        ["Please confirm whether the shipment is DAP, DDP, or EXW.", "请确认运输条款是 DAP、DDP 还是 EXW。"],
+        ["Who is responsible for import duty and customs clearance?", "谁负责进口关税和清关？"],
+        ["Can you separate product cost, tax, and freight on the invoice?", "发票上能否分开列产品费用、税费和运费？"]
+      ]
+    };
+
+    const templates = [
+      ["Meeting Update", "Hi team,\n\nHere is a quick update:\n1. Current status: ...\n2. Main blocker: ...\n3. Next step: ...\n4. Owner and timeline: ...\n\nPlease let me know if I missed anything."],
+      ["Technical Issue", "Hi ...,\n\nWe found an issue during validation. The symptom is ...\nThe current assumption is ...\nWe will investigate ... and verify ...\n\nCould you review the schematic/test data and share your feedback?"],
+      ["Quotation Request", "Hi ...,\n\nCould you please send an updated quotation for ...?\nPlease include unit price, MOQ, lead time, tax status, freight cost, and trade term such as DAP/DDP/EXW.\n\nThank you."],
+      ["Polite Clarification", "Sorry, I want to make sure I understand correctly.\nDo you mean ...?\nIf yes, I will ...\nIf not, could you clarify the expected next step?"]
+    ];
+
+    const sectionMeta = {
+      dashboard: ["Dashboard", "A focused English practice app for workplace meetings, engineering discussions, finance terms, trade terms, and daily speaking."],
+      flashcards: ["Flashcards", "Review words you are likely to use in calls, emails, technical reviews, and supplier discussions."],
+      phrases: ["Phrase Bank", "Short, practical sentences for real work situations."],
+      quiz: ["Quiz", "Train fast recognition of meaning and usage."],
+      coach: ["Speaking Coach", "Rewrite Chinese-style English into clear workplace English and practice speaking aloud."],
+      templates: ["Email Templates", "Reusable English structures for meetings, engineering issues, quotations, and clarification."],
+      searchResults: ["Search", "Filtered terms and phrases from your learning bank."]
+    };
+
+    const state = {
+      activeCategory: "All",
+      phraseGroup: "Daily",
+      flashIndex: 0,
+      known: new Set(JSON.parse(localStorage.getItem("knownTerms") || "[]")),
+      quiz: { current: null, correct: Number(localStorage.getItem("quizCorrect") || 0), attempts: Number(localStorage.getItem("quizAttempts") || 0) }
+    };
+
+    const icons = {
+      play: '<svg class="btn-icon" viewBox="0 0 24 24"><path d="m5 3 14 9-14 9V3Z"/></svg>',
+      check: '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>'
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const unique = (arr) => [...new Set(arr)];
+
+    function saveProgress() {
+      localStorage.setItem("knownTerms", JSON.stringify([...state.known]));
+      localStorage.setItem("quizCorrect", String(state.quiz.correct));
+      localStorage.setItem("quizAttempts", String(state.quiz.attempts));
+    }
+
+    function updateStats() {
+      $("termTotal").textContent = terms.length;
+      $("phraseTotal").textContent = Object.values(phraseGroups).reduce((sum, group) => sum + group.length, 0);
+      $("knownCount").textContent = state.known.size;
+      const progress = Math.round((state.known.size / terms.length) * 100);
+      $("progressBar").style.width = `${progress}%`;
+      const score = state.quiz.attempts ? Math.round((state.quiz.correct / state.quiz.attempts) * 100) : 0;
+      $("scoreStat").textContent = `${score}%`;
+      $("quizScore").textContent = state.quiz.correct;
+      $("quizAttempts").textContent = state.quiz.attempts;
+      $("quizMeter").style.width = `${score}%`;
+    }
+
+    function setSection(name) {
+      document.querySelectorAll(".section").forEach((el) => el.classList.toggle("active", el.id === name));
+      document.querySelectorAll(".nav button").forEach((btn) => btn.classList.toggle("active", btn.dataset.section === name));
+      $("pageTitle").textContent = sectionMeta[name][0];
+      $("pageSubtitle").textContent = sectionMeta[name][1];
+      if (name !== "searchResults") $("searchInput").value = "";
+    }
+
+    function filteredTerms() {
+      return state.activeCategory === "All" ? terms : terms.filter((item) => item.cat === state.activeCategory);
+    }
+
+    function renderTabs() {
+      const cats = ["All", ...unique(terms.map((item) => item.cat))];
+      $("categoryTabs").innerHTML = cats.map((cat) => `<button class="${cat === state.activeCategory ? "active" : ""}" data-cat="${cat}">${cat}</button>`).join("");
+      $("categoryTabs").querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.activeCategory = btn.dataset.cat;
+          state.flashIndex = 0;
+          renderTabs();
+          renderFlashcard();
+        });
+      });
+
+      const groups = Object.keys(phraseGroups);
+      $("phraseTabs").innerHTML = groups.map((group) => `<button class="${group === state.phraseGroup ? "active" : ""}" data-group="${group}">${group}</button>`).join("");
+      $("phraseTabs").querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.phraseGroup = btn.dataset.group;
+          renderTabs();
+          renderPhrases();
+        });
+      });
+    }
+
+    function renderFlashcard() {
+      const list = filteredTerms();
+      const item = list[state.flashIndex % list.length];
+      $("flashCategory").textContent = item.cat;
+      $("flashTerm").textContent = item.term;
+      $("flashPhonetic").textContent = item.phon;
+      $("flashMeaning").classList.remove("revealed");
+      $("flashMeaning").innerHTML = `<b>${item.zh}</b><br>${item.example}`;
+      $("markKnown").innerHTML = `${icons.check}${state.known.has(item.term) ? "Familiar" : "I know it"}`;
+    }
+
+    function speak(text) {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.rate = .88;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function renderPhrases() {
+      $("phraseCards").innerHTML = phraseGroups[state.phraseGroup].map(([en, zh]) => `
+        <article class="card">
+          <div class="card-top">
+            <h3 class="term">${en}</h3>
+            <span class="tag">${state.phraseGroup}</span>
+          </div>
+          <div class="meaning">${zh}</div>
+          <div class="actions">
+            <button class="small-btn" data-speak="${escapeHtml(en)}">${icons.play}Listen</button>
+          </div>
+        </article>
+      `).join("");
+      $("phraseCards").querySelectorAll("[data-speak]").forEach((btn) => btn.addEventListener("click", () => speak(btn.dataset.speak)));
+    }
+
+    function renderDaily() {
+      const today = new Date();
+      const start = today.getDate() % Math.max(1, terms.length - 3);
+      const picks = terms.slice(start, start + 4);
+      $("dailyDrill").innerHTML = picks.map((item) => `
+        <div class="phrase">
+          <b>${item.term}</b>
+          <span>${item.zh} · ${item.example}</span>
+        </div>
+      `).join("");
+    }
+
+    function renderTemplates() {
+      $("templateCards").innerHTML = templates.map(([title, body]) => `
+        <article class="template">
+          <div class="template-header">${title}</div>
+          <div class="template-body">${body}</div>
+          <div class="actions" style="padding: 0 12px 12px;">
+            <button class="small-btn" data-copy="${escapeHtml(body)}">Copy text</button>
+          </div>
+        </article>
+      `).join("");
+      $("templateCards").querySelectorAll("[data-copy]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await navigator.clipboard.writeText(btn.dataset.copy);
+          btn.textContent = "Copied";
+          setTimeout(() => btn.textContent = "Copy text", 900);
+        });
+      });
+    }
+
+    function shuffle(arr) {
+      return [...arr].sort(() => Math.random() - .5);
+    }
+
+    function newQuiz() {
+      const item = terms[Math.floor(Math.random() * terms.length)];
+      const wrong = shuffle(terms.filter((term) => term.term !== item.term)).slice(0, 3).map((term) => term.zh);
+      state.quiz.current = item;
+      $("quizCategory").textContent = item.cat;
+      $("quizQuestion").textContent = item.term;
+      $("quizOptions").innerHTML = shuffle([item.zh, ...wrong]).map((option) => `<button data-answer="${escapeHtml(option)}">${option}</button>`).join("");
+      $("quizOptions").querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => answerQuiz(btn));
+      });
+    }
+
+    function answerQuiz(btn) {
+      const correct = btn.dataset.answer === state.quiz.current.zh;
+      state.quiz.attempts += 1;
+      if (correct) state.quiz.correct += 1;
+      $("quizOptions").querySelectorAll("button").forEach((option) => {
+        option.disabled = true;
+        if (option.dataset.answer === state.quiz.current.zh) option.classList.add("correct");
+      });
+      if (!correct) btn.classList.add("wrong");
+      saveProgress();
+      updateStats();
+    }
+
+    function improveSentence(text) {
+      const normalized = text.trim();
+      if (!normalized) return [];
+      const suggestions = [];
+      if (/advise you to hear me|hear me to create/i.test(normalized)) {
+        suggestions.push(["Clear version", "I'd like to ask you to help me create an app that can improve my English skills."]);
+      }
+      if (/i think in daily|simple words/i.test(normalized)) {
+        suggestions.push(["Natural version", "I can handle simple daily conversations, but I want to improve my workplace and technical English."]);
+      }
+      if (/not.*familiar|不是.*熟悉|不熟悉/i.test(normalized)) {
+        suggestions.push(["Workplace version", "I'm not very familiar with these professional terms yet, especially engineering, finance, and trade terms."]);
+      }
+      suggestions.push(["Reusable pattern", "I can discuss basic daily topics, but I need more practice with professional vocabulary, meeting phrases, and technical explanations."]);
+      suggestions.push(["Polite request", "Could you help me build a structured learning plan for workplace English, including vocabulary, phrases, and speaking practice?"]);
+      return suggestions;
+    }
+
+    function renderCoach() {
+      const output = improveSentence($("rewriteInput").value);
+      $("coachOutput").innerHTML = output.map(([label, sentence]) => `
+        <div class="phrase">
+          <b>${label}</b>
+          <span>${sentence}</span>
+          <div class="actions"><button class="small-btn" data-speak="${escapeHtml(sentence)}">${icons.play}Listen</button></div>
+        </div>
+      `).join("");
+      $("coachOutput").querySelectorAll("[data-speak]").forEach((btn) => btn.addEventListener("click", () => speak(btn.dataset.speak)));
+    }
+
+    function renderSearch(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) {
+        setSection("dashboard");
+        return;
+      }
+      const termHits = terms.filter((item) => [item.cat, item.term, item.zh, item.example].join(" ").toLowerCase().includes(q));
+      const phraseHits = Object.entries(phraseGroups).flatMap(([group, items]) => items.map(([en, zh]) => ({group, en, zh}))).filter((item) => [item.group, item.en, item.zh].join(" ").toLowerCase().includes(q));
+      $("resultCards").innerHTML = [
+        ...termHits.map((item) => `
+          <article class="card">
+            <div class="card-top"><h3 class="term">${item.term}</h3><span class="tag">${item.cat}</span></div>
+            <div class="meaning">${item.zh}</div>
+            <div class="example">${item.example}</div>
+          </article>
+        `),
+        ...phraseHits.map((item) => `
+          <article class="card">
+            <div class="card-top"><h3 class="term">${item.en}</h3><span class="tag">${item.group}</span></div>
+            <div class="meaning">${item.zh}</div>
+          </article>
+        `)
+      ].join("") || `<div class="empty">No results found.</div>`;
+      setSection("searchResults");
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    document.querySelectorAll(".nav button").forEach((btn) => btn.addEventListener("click", () => setSection(btn.dataset.section)));
+    $("revealFlash").addEventListener("click", () => $("flashMeaning").classList.toggle("revealed"));
+    $("nextFlash").addEventListener("click", () => {
+      state.flashIndex = (state.flashIndex + 1) % filteredTerms().length;
+      renderFlashcard();
+    });
+    $("speakFlash").addEventListener("click", () => speak(filteredTerms()[state.flashIndex % filteredTerms().length].term));
+    $("markKnown").addEventListener("click", () => {
+      const item = filteredTerms()[state.flashIndex % filteredTerms().length];
+      state.known.add(item.term);
+      saveProgress();
+      updateStats();
+      renderFlashcard();
+    });
+    $("startDaily").addEventListener("click", () => setSection("flashcards"));
+    $("nextQuiz").addEventListener("click", newQuiz);
+    $("coachBtn").addEventListener("click", renderCoach);
+    $("sampleBtn").addEventListener("click", () => {
+      $("rewriteInput").value = "I want advise you to hear me to create an app, which you can improve my English skills.";
+      renderCoach();
+    });
+    $("searchInput").addEventListener("input", (event) => renderSearch(event.target.value));
+
+    renderTabs();
+    renderFlashcard();
+    renderPhrases();
+    renderDaily();
+    renderTemplates();
+    newQuiz();
+    updateStats();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
