@@ -446,6 +446,38 @@
       user-select: auto;
     }
 
+    .visibility-toggle {
+      margin: 0 0 14px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .visibility-toggle span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .switch-btn {
+      min-width: 92px;
+      min-height: 36px;
+      border-radius: 999px;
+      background: #dfe7e4;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .switch-btn.active {
+      background: var(--brand);
+      color: #fff;
+    }
+
     .phrase-list {
       display: grid;
       gap: 10px;
@@ -723,6 +755,10 @@
 
       <section id="flashcards" class="section">
         <div class="tabs" id="categoryTabs"></div>
+        <div class="visibility-toggle">
+          <span>Show Chinese meanings by default</span>
+          <button class="switch-btn" id="showAllMeanings" aria-pressed="false">Off</button>
+        </div>
         <div class="flashcard">
           <svg class="blueprint" viewBox="0 0 240 180" aria-hidden="true">
             <path d="M20 30h80v40H20zM140 24h70v70h-70zM70 122h120v34H70z" fill="none" stroke="currentColor" stroke-width="4"/>
@@ -1888,6 +1924,7 @@ anthropological=人类学的
       activeCategory: "All",
       phraseGroup: "Meetings",
       flashIndex: 0,
+      showAllMeanings: localStorage.getItem("showAllMeanings") === "true",
       known: new Set(JSON.parse(localStorage.getItem("knownTerms") || "[]")),
       quiz: { current: null, correct: Number(localStorage.getItem("quizCorrect") || 0), attempts: Number(localStorage.getItem("quizAttempts") || 0) }
     };
@@ -1904,6 +1941,7 @@ anthropological=人类学的
       localStorage.setItem("knownTerms", JSON.stringify([...state.known]));
       localStorage.setItem("quizCorrect", String(state.quiz.correct));
       localStorage.setItem("quizAttempts", String(state.quiz.attempts));
+      localStorage.setItem("showAllMeanings", String(state.showAllMeanings));
     }
 
     function updateStats() {
@@ -1960,9 +1998,17 @@ anthropological=人类学的
       $("flashCategory").textContent = item.cat;
       $("flashTerm").textContent = item.term;
       $("flashPhonetic").textContent = item.phon;
-      $("flashMeaning").classList.remove("revealed");
+      $("flashMeaning").classList.toggle("revealed", state.showAllMeanings);
       $("flashMeaning").innerHTML = `<b>${item.zh}</b><br>${item.example}`;
       $("markKnown").innerHTML = `${icons.check}${state.known.has(item.term) ? "Familiar" : "I know it"}`;
+      $("revealFlash").disabled = state.showAllMeanings;
+      $("revealFlash").style.opacity = state.showAllMeanings ? ".55" : "1";
+    }
+
+    function renderMeaningToggle() {
+      $("showAllMeanings").textContent = state.showAllMeanings ? "On" : "Off";
+      $("showAllMeanings").classList.toggle("active", state.showAllMeanings);
+      $("showAllMeanings").setAttribute("aria-pressed", String(state.showAllMeanings));
     }
 
     function speak(text) {
@@ -2116,6 +2162,12 @@ anthropological=人类学的
 
     document.querySelectorAll(".nav button").forEach((btn) => btn.addEventListener("click", () => setSection(btn.dataset.section)));
     $("revealFlash").addEventListener("click", () => $("flashMeaning").classList.toggle("revealed"));
+    $("showAllMeanings").addEventListener("click", () => {
+      state.showAllMeanings = !state.showAllMeanings;
+      saveProgress();
+      renderMeaningToggle();
+      renderFlashcard();
+    });
     $("nextFlash").addEventListener("click", () => {
       state.flashIndex = (state.flashIndex + 1) % filteredTerms().length;
       renderFlashcard();
@@ -2138,6 +2190,7 @@ anthropological=人类学的
     $("searchInput").addEventListener("input", (event) => renderSearch(event.target.value));
 
     renderTabs();
+    renderMeaningToggle();
     renderFlashcard();
     renderPhrases();
     renderDaily();
