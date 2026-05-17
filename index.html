@@ -478,6 +478,26 @@
       color: #fff;
     }
 
+    .voice-control {
+      margin: -6px 0 14px;
+      display: grid;
+      grid-template-columns: auto minmax(180px, 360px);
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .voice-control select {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--text);
+      padding: 0 10px;
+      width: 100%;
+    }
+
     .phrase-list {
       display: grid;
       gap: 10px;
@@ -759,6 +779,10 @@
           <span>Show Chinese meanings by default</span>
           <button class="switch-btn" id="showAllMeanings" aria-pressed="false">Off</button>
         </div>
+        <label class="voice-control">
+          <span>Voice</span>
+          <select id="voiceSelect" aria-label="English voice"></select>
+        </label>
         <div class="flashcard">
           <svg class="blueprint" viewBox="0 0 240 180" aria-hidden="true">
             <path d="M20 30h80v40H20zM140 24h70v70h-70zM70 122h120v34H70z" fill="none" stroke="currentColor" stroke-width="4"/>
@@ -1930,6 +1954,8 @@ anthropological=人类学的
       flashIndex: 0,
       flashHistory: [],
       showAllMeanings: localStorage.getItem("showAllMeanings") === "true",
+      selectedVoiceURI: localStorage.getItem("selectedVoiceURI") || "",
+      voices: [],
       known: new Set(JSON.parse(localStorage.getItem("knownTerms") || "[]")),
       quiz: { current: null, correct: Number(localStorage.getItem("quizCorrect") || 0), attempts: Number(localStorage.getItem("quizAttempts") || 0) }
     };
@@ -1947,6 +1973,7 @@ anthropological=人类学的
       localStorage.setItem("quizCorrect", String(state.quiz.correct));
       localStorage.setItem("quizAttempts", String(state.quiz.attempts));
       localStorage.setItem("showAllMeanings", String(state.showAllMeanings));
+      localStorage.setItem("selectedVoiceURI", state.selectedVoiceURI);
     }
 
     function updateStats() {
@@ -2003,7 +2030,7 @@ anthropological=人类学的
       const item = list[state.flashIndex % list.length];
       $("flashCategory").textContent = item.cat;
       $("flashTerm").textContent = item.term;
-      $("flashPhonetic").textContent = item.phon;
+      $("flashPhonetic").textContent = phoneticFor(item);
       $("flashMeaning").classList.toggle("revealed", state.showAllMeanings);
       $("flashMeaning").innerHTML = `<b>${item.zh}</b><br>${item.example}`;
       $("markKnown").innerHTML = `${icons.check}${state.known.has(item.term) ? "Familiar" : "I know it"}`;
@@ -2029,12 +2056,134 @@ anthropological=人类学的
       $("showAllMeanings").setAttribute("aria-pressed", String(state.showAllMeanings));
     }
 
+    const phoneticMap = {
+      "amalgamation": "/əˌmælɡəˈmeɪʃən/",
+      "antiquity": "/ænˈtɪkwəti/",
+      "apparatus": "/ˌæpəˈreɪtəs/",
+      "archeological": "/ˌɑːrkiəˈlɑːdʒɪkəl/",
+      "architectural": "/ˌɑːrkəˈtektʃərəl/",
+      "ascend": "/əˈsend/",
+      "automation": "/ˌɔːtəˈmeɪʃən/",
+      "autonomy": "/ɔːˈtɑːnəmi/",
+      "bureaucratic": "/ˌbjʊrəˈkrætɪk/",
+      "capacity": "/kəˈpæsəti/",
+      "choreographed": "/ˈkɔːriəɡræft/",
+      "civilization": "/ˌsɪvələˈzeɪʃən/",
+      "compliance": "/kəmˈplaɪəns/",
+      "component": "/kəmˈpoʊnənt/",
+      "configuration": "/kənˌfɪɡjəˈreɪʃən/",
+      "congestion": "/kənˈdʒestʃən/",
+      "conservation": "/ˌkɑːnsərˈveɪʃən/",
+      "consolidation": "/kənˌsɑːləˈdeɪʃən/",
+      "constraint": "/kənˈstreɪnt/",
+      "contemporary": "/kənˈtempəreri/",
+      "convergence": "/kənˈvɜːrdʒəns/",
+      "crucial": "/ˈkruːʃəl/",
+      "densification": "/ˌdensəfəˈkeɪʃən/",
+      "deterioration": "/dɪˌtɪriəˈreɪʃən/",
+      "diagnostic": "/ˌdaɪəɡˈnɑːstɪk/",
+      "dimension": "/daɪˈmenʃən/",
+      "disruption": "/dɪsˈrʌpʃən/",
+      "dynamics": "/daɪˈnæmɪks/",
+      "efficiency": "/ɪˈfɪʃənsi/",
+      "electromagnetic": "/ɪˌlektroʊmæɡˈnetɪk/",
+      "embodiment": "/ɪmˈbɑːdimənt/",
+      "emergence": "/ɪˈmɜːrdʒəns/",
+      "empirical": "/ɪmˈpɪrɪkəl/",
+      "enclosure": "/ɪnˈkloʊʒər/",
+      "endurance": "/ɪnˈdʊrəns/",
+      "equilibrium": "/ˌiːkwəˈlɪbriəm/",
+      "infrastructure": "/ˈɪnfrəstrʌktʃər/",
+      "installation": "/ˌɪnstəˈleɪʃən/",
+      "integration": "/ˌɪntəˈɡreɪʃən/",
+      "intervention": "/ˌɪntərˈvenʃən/",
+      "mechanism": "/ˈmekənɪzəm/",
+      "phenomenology": "/fəˌnɑːməˈnɑːlədʒi/",
+      "standardization": "/ˌstændərdəˈzeɪʃən/",
+      "urbanization": "/ˌɜːrbənəˈzeɪʃən/",
+      "traction": "/ˈtrækʃən/",
+      "governor": "/ˈɡʌvərnər/",
+      "gearless": "/ˈɡɪrləs/",
+      "counterweight": "/ˈkaʊntərweɪt/",
+      "sheave": "/ʃiːv/",
+      "suspension": "/səˈspenʃən/",
+      "hoistway": "/ˈhɔɪstweɪ/",
+      "hydraulic": "/haɪˈdrɔːlɪk/",
+      "vibration": "/vaɪˈbreɪʃən/",
+      "acceleration": "/əkˌseləˈreɪʃən/",
+      "align": "/əˈlaɪn/",
+      "approval": "/əˈpruːvəl/",
+      "quotation": "/kwoʊˈteɪʃən/",
+      "delivery": "/dɪˈlɪvəri/",
+      "invoice": "/ˈɪnvɔɪs/",
+      "customs": "/ˈkʌstəmz/",
+      "clearance": "/ˈklɪrəns/",
+      "liability": "/ˌlaɪəˈbɪləti/",
+      "negotiation": "/nɪˌɡoʊʃiˈeɪʃən/",
+      "warranty": "/ˈwɔːrənti/",
+      "milestone": "/ˈmaɪlstoʊn/",
+      "escalate": "/ˈeskəleɪt/",
+      "dispatch": "/dɪˈspætʃ/",
+      "incoterms": "/ˈɪŋkoʊtɜːrmz/"
+    };
+
+    function phoneticFor(item) {
+      if (item.phon) return item.phon;
+      const cleaned = item.term.toLowerCase().replace(/[^a-z0-9\\s-]/g, " ").replace(/\\s+/g, " ").trim();
+      if (phoneticMap[cleaned]) return phoneticMap[cleaned];
+      const parts = cleaned.split(/\\s+/).filter(Boolean).slice(0, 6).map((part) => phoneticMap[part] || part);
+      return parts.length ? `/${parts.join(" · ").replaceAll("/", "")}/` : "";
+    }
+
+    function preferredVoiceScore(voice) {
+      const name = `${voice.name} ${voice.lang}`.toLowerCase();
+      let score = voice.lang.toLowerCase().startsWith("en") ? 10 : 0;
+      if (/premium|enhanced|neural|natural|siri|google|microsoft/.test(name)) score += 8;
+      if (/samantha|daniel|alex|karen|moira|tessa|serena|aria|jenny|guy/.test(name)) score += 6;
+      if (/en-us|en-gb|en-au/.test(name)) score += 3;
+      if (voice.localService) score += 1;
+      return score;
+    }
+
+    function selectedVoice() {
+      return state.voices.find((voice) => voice.voiceURI === state.selectedVoiceURI) ||
+        [...state.voices].filter((voice) => voice.lang.toLowerCase().startsWith("en")).sort((a, b) => preferredVoiceScore(b) - preferredVoiceScore(a))[0] ||
+        null;
+    }
+
+    function renderVoiceSelect() {
+      if (!("speechSynthesis" in window)) {
+        $("voiceSelect").innerHTML = `<option>Speech not supported</option>`;
+        $("voiceSelect").disabled = true;
+        return;
+      }
+      state.voices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.toLowerCase().startsWith("en"));
+      if (!state.voices.length) {
+        $("voiceSelect").innerHTML = `<option>Loading voices...</option>`;
+        return;
+      }
+      const best = selectedVoice();
+      if (!state.selectedVoiceURI && best) state.selectedVoiceURI = best.voiceURI;
+      $("voiceSelect").innerHTML = state.voices
+        .sort((a, b) => preferredVoiceScore(b) - preferredVoiceScore(a))
+        .map((voice) => `<option value="${escapeHtml(voice.voiceURI)}">${escapeHtml(voice.name)} · ${escapeHtml(voice.lang)}</option>`)
+        .join("");
+      $("voiceSelect").value = state.selectedVoiceURI;
+    }
+
     function speak(text) {
       if (!("speechSynthesis" in window)) return;
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "en-US";
-      utterance.rate = .88;
+      const voice = selectedVoice();
+      if (voice) {
+        utterance.voice = voice;
+        utterance.lang = voice.lang;
+      } else {
+        utterance.lang = "en-US";
+      }
+      utterance.rate = .82;
+      utterance.pitch = 1;
       window.speechSynthesis.speak(utterance);
     }
 
@@ -2186,6 +2335,10 @@ anthropological=人类学的
       renderMeaningToggle();
       renderFlashcard();
     });
+    $("voiceSelect").addEventListener("change", () => {
+      state.selectedVoiceURI = $("voiceSelect").value;
+      saveProgress();
+    });
     $("prevFlash").addEventListener("click", () => {
       if (!state.flashHistory.length) return;
       state.flashIndex = state.flashHistory.pop();
@@ -2216,6 +2369,10 @@ anthropological=人类学的
 
     renderTabs();
     renderMeaningToggle();
+    renderVoiceSelect();
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = renderVoiceSelect;
+    }
     renderFlashcard();
     renderPhrases();
     renderDaily();
