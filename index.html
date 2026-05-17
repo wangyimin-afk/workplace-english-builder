@@ -785,6 +785,10 @@
               <svg class="btn-icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
               I know it
             </button>
+            <button class="ghost-btn" id="prevFlash">
+              <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+              Previous
+            </button>
             <button class="ghost-btn" id="nextFlash">
               <svg class="btn-icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               Next
@@ -1924,6 +1928,7 @@ anthropological=人类学的
       activeCategory: "All",
       phraseGroup: "Meetings",
       flashIndex: 0,
+      flashHistory: [],
       showAllMeanings: localStorage.getItem("showAllMeanings") === "true",
       known: new Set(JSON.parse(localStorage.getItem("knownTerms") || "[]")),
       quiz: { current: null, correct: Number(localStorage.getItem("quizCorrect") || 0), attempts: Number(localStorage.getItem("quizAttempts") || 0) }
@@ -1976,6 +1981,7 @@ anthropological=人类学的
         btn.addEventListener("click", () => {
           state.activeCategory = btn.dataset.cat;
           state.flashIndex = 0;
+          state.flashHistory = [];
           renderTabs();
           renderFlashcard();
         });
@@ -2003,6 +2009,18 @@ anthropological=人类学的
       $("markKnown").innerHTML = `${icons.check}${state.known.has(item.term) ? "Familiar" : "I know it"}`;
       $("revealFlash").disabled = state.showAllMeanings;
       $("revealFlash").style.opacity = state.showAllMeanings ? ".55" : "1";
+      $("prevFlash").disabled = state.flashHistory.length === 0;
+      $("prevFlash").style.opacity = state.flashHistory.length === 0 ? ".55" : "1";
+    }
+
+    function chooseNextFlashIndex() {
+      const list = filteredTerms();
+      if (list.length <= 1) return 0;
+      let next = state.flashIndex;
+      while (next === state.flashIndex) {
+        next = Math.floor(Math.random() * list.length);
+      }
+      return next;
     }
 
     function renderMeaningToggle() {
@@ -2168,8 +2186,15 @@ anthropological=人类学的
       renderMeaningToggle();
       renderFlashcard();
     });
+    $("prevFlash").addEventListener("click", () => {
+      if (!state.flashHistory.length) return;
+      state.flashIndex = state.flashHistory.pop();
+      renderFlashcard();
+    });
     $("nextFlash").addEventListener("click", () => {
-      state.flashIndex = (state.flashIndex + 1) % filteredTerms().length;
+      state.flashHistory.push(state.flashIndex);
+      if (state.flashHistory.length > 100) state.flashHistory.shift();
+      state.flashIndex = chooseNextFlashIndex();
       renderFlashcard();
     });
     $("speakFlash").addEventListener("click", () => speak(filteredTerms()[state.flashIndex % filteredTerms().length].term));
