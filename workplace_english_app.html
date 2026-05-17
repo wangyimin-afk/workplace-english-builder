@@ -1254,6 +1254,55 @@
 
     expandProfessionalTerms(2000);
 
+    const elementsElevatorVocabulary = `
+      amalgamation antiquity apparatus archeological architectural ascend automation autonomy bureaucratic capacity choreographed civilization clad compact compliance component concatenation configuration congestion conservation consolidation constraint contemporary convention convergence counterpart crucial culmination densification derivative designator deterioration diagnostic dialectical dimension directive disruption dissemination distinct diverse domestic dominance dynamics economical efficiency electromagnetic embodiment emergence empirical enclosure endurance engineering enhance entity environment equilibrium eradicate essence establish estimation evolution exceed excellence exception exert exploit exterior facilitate fabrication faction feasible federation flexibility fluctuation formation formula foundation framework fundamental furnish fusion generate geographical gigantic governance gradient guarantee guideline habitat heritage hierarchy homogeneous horizontal hydraulic hypothesis identical ignition imperative implement implication implicit incentive incidence inclination industrial inertia infrastructure innovation installation institution instrumental integration integrity intellectual intensity interaction interior intermediate internal interpretation intervention intricate intrinsic invade invention inventory investigate irrational iteration judiciary justification landscape latitude legislation leisure leverage liability limitation litigation livelihood logistics longitude machinery magnetic maintain manifestation manual manufacture margin marine material mathematical mechanism medieval melancholy memorial merchant merge merit metaphor microscopic military minimal minimize ministry minor minute miscellaneous missile mobilize mode modification moisture monetary monitor monument moral mortgage motivate municipal mutual mysterious narrative national navigate necessity negative negotiate network neutral nevertheless niche nominal nonetheless norm notable notion novel numerical nutrition objective obligation obstacle obtain obvious occasional occupation occur offence offensive official omit operation opponent opportunity oppose optimal option orbital organic organism orientation origin original ornament orthodox outcome outline output overall overcome overhead overlook overseas overwhelming oxide panorama parallel parameter parcel participant particular partition passive patch pattern percentage perception permanent permission permit personnel perspective persuade phenomenon philosophy physical pioneer platform pledge policy portable portal position positive potential practical precaution precede precise precision predict preference preliminary premise premium preparation prepare presence presentation pressure previous primary prime primitive principal principle priority privacy private procedure proceed process produce product production profit programme project prominent promote prompt proof proper property proportion proposal prospect protect prove provide publish pulse pump punctual purchase purpose pursue pyramid qualification qualify quality quantity rail railway raise range rank rapid rate raw reach react reaction reality reason reasonable recall receive recognize recommend record recover reduce refer reference reflect reform refresh regard region register regulate relation relative release relevant reliable render renew repair repeat replace reply report represent reproduce reputation request require research resemble reserve resident resolution resolve resource respect restore restrain restrict result resume retain return reverse review revolution reward rigid rise risk robot roof rotate route routine safety sample scale schedule scheme scientific screen section secure security select senior sensitive separate sequence series serious service settle severe shaft shelter shift signal site situation skeleton slide social society solar solid solution solve space specialist specific speed sphere spirit split spot spray spread square stable stack stage stair standard static status steady steel steep step stiff stock stone store straight structure succeed success superior supply support surface survey survive switch symbol system tank tax temperature terminal territory test theory thick thread through tight title tool top topic total touch tower trace track trade tradition traffic train transfer transform transparent travel trial triangle trouble truck trust tube turn type uniform union unique unit update upgrade upper urban urgent utility vacant value variable variety various vast vehicle vendor verify version vertical vessel view virtual visual vital volume wage wall warn waste water wave weight wheel width wind window wire within work worker workshop world worth wrench write zone
+      traction governor gearless counterweight sheave suspension lubricant circuit connector tension reliability mechanized hoisting patent obsolete fuzzy_logic integrated generic ultra_rope vibration hoistway gearbox scenography acceleration compactness electro_mechanical algorithmic sustainability etiquette numerology Sabbath phenomenology contingency standardization commodification urbanization behavioral psychological anthropological
+    `;
+
+    const elementsElevatorMeanings = {
+      traction: "曳引", governor: "限速器", gearless: "无齿轮的", counterweight: "对重", sheave: "曳引轮；滑轮", suspension: "悬挂；悬吊",
+      hoistway: "电梯井道", hydraulic: "液压的", shaft: "电梯井道", overhead: "顶层空间；上方净空", capacity: "容量；承载能力",
+      automation: "自动化", autonomy: "自主性", apparatus: "装置；设备体系", architectural: "建筑的；建筑学的", ascend: "上升；攀升",
+      choreography: "编排", choreographed: "经过编排的；被组织的", compliance: "合规；符合规范", component: "组件；构件",
+      configuration: "配置；构型", congestion: "拥堵；拥挤", conservation: "保护；保存", consolidation: "整合；巩固", constraint: "约束；限制",
+      contemporary: "当代的", convergence: "汇聚；趋同", densification: "密集化", deterioration: "恶化；退化", diagnostic: "诊断的",
+      dimension: "尺寸；维度", disruption: "扰动；中断", electromagnetic: "电磁的", embodiment: "体现；具身化", enclosure: "围护；封闭空间",
+      endurance: "耐久性", equilibrium: "平衡", exterior: "外部；外立面", fabrication: "制造；建造", feasible: "可行的",
+      foundation: "基础；地基", framework: "框架", gradient: "坡度；梯度", heritage: "遗产", hierarchy: "层级",
+      infrastructure: "基础设施", installation: "安装；装置", integration: "集成；整合", interior: "内部；室内", intervention: "介入；干预",
+      intricate: "复杂精细的", logistics: "物流", machinery: "机械设备", mechanism: "机制；机械结构", metaphor: "隐喻",
+      modification: "修改；改造", moisture: "湿气；水分", municipal: "市政的", narrative: "叙事", orientation: "方向；朝向",
+      ornament: "装饰", parameter: "参数", partition: "隔断", perception: "感知", platform: "平台；站台", portal: "入口；门洞",
+      precision: "精度", procedure: "流程", proportion: "比例", proposal: "方案；提案", rail: "导轨；轨道",
+      release: "发布；放行", render: "呈现；渲染", rigid: "刚性的", safety: "安全", scale: "尺度；比例",
+      scheme: "方案", section: "剖面；部分", sequence: "序列", standard: "标准", static: "静态的", steel: "钢材",
+      structure: "结构", surface: "表面", tension: "张力", vibration: "振动", scenography: "场景设计；舞台化空间",
+      acceleration: "加速度", compactness: "紧凑性", sustainability: "可持续性", etiquette: "礼仪", numerology: "数字象征；数字学",
+      phenomenology: "现象学", contingency: "偶然性；应急事件", standardization: "标准化", commodification: "商品化", urbanization: "城市化"
+    };
+
+    function addElementsElevatorVocabulary() {
+      const seen = new Set(terms.map((item) => item.term.toLowerCase()));
+      const words = elementsElevatorVocabulary
+        .split(/\s+/)
+        .map((word) => word.trim().replace(/^[-|•]+|[,.;:]+$/g, "").replace(/_/g, " "))
+        .filter(Boolean);
+      for (const word of words) {
+        const key = word.toLowerCase();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        terms.push({
+          cat: "Elements of Architecture: Elevator",
+          term: word,
+          phon: "",
+          zh: elementsElevatorMeanings[key] || "库哈斯《建筑的元素：电梯》阅读词汇",
+          example: `In an architectural reading of the elevator, "${word}" can describe space, technology, movement, regulation, or modern urban life.`
+        });
+      }
+    }
+
+    addElementsElevatorVocabulary();
+
     Object.keys(phraseGroups).forEach((key) => delete phraseGroups[key]);
     Object.assign(phraseGroups, {
       "Meetings": [
