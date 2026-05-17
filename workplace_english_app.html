@@ -668,12 +668,12 @@
       <div class="side-panel">
         <h2>Progress</h2>
         <div class="meter"><span id="progressBar"></span></div>
-        <div class="tiny"><b id="knownCount">0</b> terms marked familiar. Build a practical vocabulary base for work conversations.</div>
+        <div class="tiny"><b id="knownCount">0</b> terms marked familiar. Focus on professional expressions for meetings, projects, delivery, elevators, finance, contracts, and negotiation.</div>
       </div>
 
       <div class="side-panel">
         <h2>Daily Routine</h2>
-        <div class="tiny">1. Learn 8 words.<br>2. Read 5 phrases aloud.<br>3. Rewrite one work message.<br>4. Review yesterday's unfamiliar terms.</div>
+        <div class="tiny">1. Learn 8 professional terms.<br>2. Read 5 customer-facing phrases aloud.<br>3. Rewrite one work email.<br>4. Review delivery, payment, or project risks.</div>
       </div>
     </aside>
 
@@ -681,7 +681,7 @@
       <div class="topbar">
         <div class="title">
           <h2 id="pageTitle">Dashboard</h2>
-          <p id="pageSubtitle">A focused English practice app for workplace meetings, engineering discussions, finance terms, trade terms, and daily speaking.</p>
+          <p id="pageSubtitle">A focused English practice app for elevator projects, customer meetings, delivery follow-up, finance, contracts, negotiation, and international business communication.</p>
         </div>
         <div class="search">
           <input id="searchInput" placeholder="Search terms, phrases, examples..." />
@@ -701,10 +701,10 @@
           <div class="tool">
             <h3>Recommended Path</h3>
             <div class="phrase-list">
-              <div class="phrase"><b>Stage 1: daily confidence</b><span>Objects, requests, polite clarification, simple opinions, and common verbs.</span></div>
-              <div class="phrase"><b>Stage 2: workplace fluency</b><span>Kickoff meetings, schedules, delivery, follow-up, reporting blockers, and asking for confirmation.</span></div>
-              <div class="phrase"><b>Stage 3: technical accuracy</b><span>Electrical terms, mechanical words, schematic discussion, verification, qualification, compliance, and standards.</span></div>
-              <div class="phrase"><b>Stage 4: business precision</b><span>Finance, taxable/non-taxable language, DAP/DDP/EXW trade terms, quotations, invoices, and negotiation.</span></div>
+              <div class="phrase"><b>Stage 1: meeting control</b><span>Kickoff, alignment, action items, minutes, risks, decisions, and follow-up.</span></div>
+              <div class="phrase"><b>Stage 2: project tracking</b><span>Milestones, open points, blockers, owner, ETA, escalation, and recovery plans.</span></div>
+              <div class="phrase"><b>Stage 3: elevator and delivery accuracy</b><span>EN 81-70, car operating panel, landing fixture, dispatch, customs, lead time, and handover.</span></div>
+              <div class="phrase"><b>Stage 4: commercial precision</b><span>Payment terms, tax, DAP/DDP/EXW, warranty, liability, contract clauses, and negotiation.</span></div>
             </div>
           </div>
 
@@ -914,18 +914,178 @@
     ];
 
     const sectionMeta = {
-      dashboard: ["Dashboard", "A focused English practice app for workplace meetings, engineering discussions, finance terms, trade terms, and daily speaking."],
-      flashcards: ["Flashcards", "Review words you are likely to use in calls, emails, technical reviews, and supplier discussions."],
-      phrases: ["Phrase Bank", "Short, practical sentences for real work situations."],
+      dashboard: ["Dashboard", "A focused English practice app for elevator projects, customer meetings, delivery follow-up, finance, contracts, negotiation, and international business communication."],
+      flashcards: ["Flashcards", "Review professional terms you are likely to use in calls, emails, technical reviews, quotation discussions, and project follow-up."],
+      phrases: ["Phrase Bank", "Short, practical sentences for real meetings, delivery updates, payment follow-up, negotiation, and customer communication."],
       quiz: ["Quiz", "Train fast recognition of meaning and usage."],
       coach: ["Speaking Coach", "Rewrite Chinese-style English into clear workplace English and practice speaking aloud."],
-      templates: ["Email Templates", "Reusable English structures for meetings, engineering issues, quotations, and clarification."],
+      templates: ["Email Templates", "Reusable English structures for meeting recaps, shipment updates, payment reminders, negotiation, contract clarification, and customer follow-up."],
       searchResults: ["Search", "Filtered terms and phrases from your learning bank."]
     };
 
+    terms.length = 0;
+    terms.push(
+      {cat:"Meetings", term:"align on", phon:"uh-LYN on", zh:"对齐；就某事达成一致", example:"Before we move forward, let's align on the scope, deadline, and owner."},
+      {cat:"Meetings", term:"action item", phon:"AK-shən EYE-təm", zh:"待办事项；行动项", example:"I will send the meeting minutes with clear action items and owners."},
+      {cat:"Meetings", term:"minutes of meeting", phon:"MIN-its of MEE-ting", zh:"会议纪要", example:"Please review the minutes of meeting and confirm if anything is missing."},
+      {cat:"Meetings", term:"decision maker", phon:"di-SI-zhən MAY-ker", zh:"决策人", example:"Could you confirm who the final decision maker is on your side?"},
+      {cat:"Meetings", term:"tentative schedule", phon:"TEN-tuh-tiv SKEH-jool", zh:"暂定计划", example:"This is only a tentative schedule until we receive your final confirmation."},
+      {cat:"Meetings", term:"pending confirmation", phon:"PEN-ding kon-fer-MAY-shən", zh:"待确认", example:"The delivery date is pending confirmation from the factory."},
+      {cat:"Meetings", term:"takeaway", phon:"TAYK-uh-way", zh:"会议结论；关键收获", example:"The main takeaway is that the customer needs a faster delivery plan."},
+      {cat:"Meetings", term:"circle back", phon:"SER-kəl bak", zh:"稍后回到这个话题；再跟进", example:"Let's circle back after we verify the test report."},
+
+      {cat:"Project Tracking", term:"milestone", phon:"MYL-stohn", zh:"里程碑", example:"The next milestone is sample approval before the end of this month."},
+      {cat:"Project Tracking", term:"open point", phon:"OH-pən point", zh:"未关闭事项；待解决点", example:"There are still three open points before we can freeze the design."},
+      {cat:"Project Tracking", term:"blocker", phon:"BLOK-er", zh:"阻碍事项", example:"The missing drawing is the main blocker for production release."},
+      {cat:"Project Tracking", term:"owner", phon:"OH-ner", zh:"负责人", example:"Please assign an owner for each open point."},
+      {cat:"Project Tracking", term:"ETA", phon:"E-T-A", zh:"预计完成/到达时间", example:"Could you share the ETA for the revised quotation?"},
+      {cat:"Project Tracking", term:"escalate", phon:"ES-kuh-layt", zh:"升级处理；向上反馈", example:"If we cannot get feedback today, we may need to escalate this issue."},
+      {cat:"Project Tracking", term:"recovery plan", phon:"ri-KUH-vuh-ree plan", zh:"追回进度方案；补救计划", example:"Please provide a recovery plan for the delayed shipment."},
+      {cat:"Project Tracking", term:"on track", phon:"on trak", zh:"按计划进行", example:"The project is still on track, but the timeline is tight."},
+      {cat:"Project Tracking", term:"behind schedule", phon:"bi-HYND SKEH-jool", zh:"进度落后", example:"The tooling is behind schedule due to supplier capacity."},
+      {cat:"Project Tracking", term:"scope creep", phon:"skohp kreep", zh:"需求范围蔓延", example:"We need to control scope creep or the cost will increase."},
+
+      {cat:"Elevator", term:"car operating panel", phon:"kar OP-er-ay-ting PAN-əl", zh:"轿厢操纵盘；COP", example:"The customer requested a stainless-steel car operating panel with Braille buttons."},
+      {cat:"Elevator", term:"landing operating panel", phon:"LAN-ding OP-er-ay-ting PAN-əl", zh:"厅外召唤盒；LOP", example:"Please confirm the landing operating panel size and mounting height."},
+      {cat:"Elevator", term:"hall call button", phon:"hawl kawl BUH-tən", zh:"厅外呼梯按钮", example:"The hall call button must meet the accessibility requirement."},
+      {cat:"Elevator", term:"destination control system", phon:"des-ti-NAY-shən kon-TROHL SIS-təm", zh:"目的楼层控制系统", example:"Does this project require a destination control system?"},
+      {cat:"Elevator", term:"shaft", phon:"shaft", zh:"井道", example:"The shaft dimension must be checked before we finalize the layout."},
+      {cat:"Elevator", term:"pit depth", phon:"pit depth", zh:"底坑深度", example:"The pit depth is not enough for the proposed elevator model."},
+      {cat:"Elevator", term:"overhead clearance", phon:"OH-ver-hed KLEER-əns", zh:"顶层高度；顶部净空", example:"Please verify the overhead clearance with the site drawing."},
+      {cat:"Elevator", term:"rated load", phon:"RAY-tid lohd", zh:"额定载重", example:"The rated load is 1000 kilograms for this passenger elevator."},
+      {cat:"Elevator", term:"travel height", phon:"TRAV-əl hyt", zh:"提升高度；运行高度", example:"The travel height affects the final quotation and lead time."},
+      {cat:"Elevator", term:"machine-room-less", phon:"muh-SHEEN room less", zh:"无机房；MRL", example:"The customer prefers a machine-room-less solution to save building space."},
+      {cat:"Elevator", term:"EN 81-70", phon:"E-N eighty-one seventy", zh:"欧洲电梯无障碍相关标准", example:"Please confirm whether EN 81-70 is mandatory for this tender."},
+      {cat:"Elevator", term:"accessibility requirement", phon:"ak-ses-uh-BIL-uh-tee ri-KWY-er-mənt", zh:"无障碍要求", example:"The button height must follow the accessibility requirement."},
+      {cat:"Elevator", term:"fire recall", phon:"fyr ri-KAWL", zh:"消防迫降；消防召回", example:"Please confirm the fire recall logic with the consultant."},
+      {cat:"Elevator", term:"handover documents", phon:"HAND-oh-ver DOK-yoo-ments", zh:"交付文件；移交资料", example:"The handover documents should include drawings, certificates, and test reports."},
+
+      {cat:"Delivery & Logistics", term:"lead time", phon:"leed tym", zh:"交期；生产周期", example:"The standard lead time is six weeks after deposit and drawing approval."},
+      {cat:"Delivery & Logistics", term:"dispatch", phon:"dis-PATCH", zh:"发货；派送", example:"We can dispatch the goods once the balance payment is received."},
+      {cat:"Delivery & Logistics", term:"partial shipment", phon:"PAR-shəl SHIP-mənt", zh:"分批发货", example:"Would you accept a partial shipment for the urgent items?"},
+      {cat:"Delivery & Logistics", term:"shipping mark", phon:"SHIP-ing mark", zh:"唛头；箱唛", example:"Please send your required shipping mark before packing."},
+      {cat:"Delivery & Logistics", term:"packing list", phon:"PAK-ing list", zh:"装箱单", example:"The packing list will be sent together with the commercial invoice."},
+      {cat:"Delivery & Logistics", term:"commercial invoice", phon:"kuh-MER-shəl IN-voys", zh:"商业发票", example:"Please make sure the commercial invoice matches the customs declaration."},
+      {cat:"Delivery & Logistics", term:"bill of lading", phon:"bil of LAY-ding", zh:"提单；B/L", example:"We will send the draft bill of lading for your confirmation."},
+      {cat:"Delivery & Logistics", term:"customs clearance", phon:"KUS-təmz KLEER-əns", zh:"清关", example:"Under DAP terms, the buyer usually handles import customs clearance."},
+      {cat:"Delivery & Logistics", term:"HS code", phon:"H-S code", zh:"海关编码", example:"Please confirm the HS code with your local broker."},
+      {cat:"Delivery & Logistics", term:"delivery window", phon:"di-LIV-er-ee WIN-doh", zh:"交付窗口；可交付时间段", example:"The delivery window is between June 10 and June 15."},
+      {cat:"Delivery & Logistics", term:"freight forwarder", phon:"frayt FOR-wer-der", zh:"货代", example:"Please ask your freight forwarder to contact our logistics team."},
+      {cat:"Delivery & Logistics", term:"incoterms", phon:"IN-koh-termz", zh:"国际贸易术语", example:"The quotation should clearly state the incoterms and destination."},
+
+      {cat:"Finance & Payment", term:"proforma invoice", phon:"proh-FOR-muh IN-voys", zh:"形式发票；PI", example:"We will issue the proforma invoice after price confirmation."},
+      {cat:"Finance & Payment", term:"down payment", phon:"down PAY-mənt", zh:"预付款；首付款", example:"Production will start after we receive the 30% down payment."},
+      {cat:"Finance & Payment", term:"balance payment", phon:"BAL-əns PAY-mənt", zh:"尾款", example:"The balance payment is due before shipment."},
+      {cat:"Finance & Payment", term:"payment term", phon:"PAY-mənt term", zh:"付款条款", example:"Our standard payment term is 30% deposit and 70% before shipment."},
+      {cat:"Finance & Payment", term:"net 30", phon:"net THUR-tee", zh:"30天账期", example:"Net 30 can be considered after credit approval."},
+      {cat:"Finance & Payment", term:"overdue payment", phon:"OH-ver-doo PAY-mənt", zh:"逾期付款", example:"There is an overdue payment on the previous order."},
+      {cat:"Finance & Payment", term:"bank charges", phon:"bank CHAR-jiz", zh:"银行手续费", example:"Bank charges should be borne by the payer."},
+      {cat:"Finance & Payment", term:"tax included", phon:"taks in-KLOO-did", zh:"含税", example:"Please confirm whether the price is tax included or before tax."},
+      {cat:"Finance & Payment", term:"VAT excluded", phon:"V-A-T ik-SKLOO-did", zh:"不含增值税", example:"The listed price is VAT excluded."},
+      {cat:"Finance & Payment", term:"credit limit", phon:"KRE-dit LIM-it", zh:"信用额度", example:"The order value is above the approved credit limit."},
+
+      {cat:"Contracts", term:"scope of supply", phon:"skohp of suh-PLY", zh:"供货范围", example:"Please check whether installation is included in the scope of supply."},
+      {cat:"Contracts", term:"warranty period", phon:"WOR-ən-tee PEER-ee-əd", zh:"质保期", example:"The warranty period starts from shipment date unless otherwise agreed."},
+      {cat:"Contracts", term:"liability", phon:"ly-uh-BIL-uh-tee", zh:"责任；赔偿责任", example:"We need to clarify liability for damage during local transportation."},
+      {cat:"Contracts", term:"liquidated damages", phon:"LIK-wi-day-tid DAM-ij-iz", zh:"违约金；约定损害赔偿", example:"The liquidated damages clause is too strict for this project timeline."},
+      {cat:"Contracts", term:"force majeure", phon:"fors mah-ZHUR", zh:"不可抗力", example:"The contract should include a force majeure clause."},
+      {cat:"Contracts", term:"change order", phon:"chaynj OR-der", zh:"变更单", example:"Any additional requirement should be handled through a change order."},
+      {cat:"Contracts", term:"acceptance criteria", phon:"ak-SEP-təns kry-TEER-ee-uh", zh:"验收标准", example:"Please define the acceptance criteria before we start production."},
+      {cat:"Contracts", term:"governing law", phon:"GUH-ver-ning law", zh:"适用法律", example:"The governing law should be agreed before contract signing."},
+      {cat:"Contracts", term:"confidentiality", phon:"kon-fi-den-shee-AL-uh-tee", zh:"保密", example:"The technical drawings are subject to confidentiality obligations."},
+      {cat:"Contracts", term:"termination clause", phon:"ter-mi-NAY-shən klawz", zh:"终止条款", example:"Please review the termination clause with your legal team."},
+
+      {cat:"Negotiation", term:"best and final offer", phon:"best and FY-nəl AW-fer", zh:"最终最优报价；BAFO", example:"This is our best and final offer based on the current scope."},
+      {cat:"Negotiation", term:"room for negotiation", phon:"room for ni-goh-shee-AY-shən", zh:"议价空间", example:"There is limited room for negotiation because material costs increased."},
+      {cat:"Negotiation", term:"trade-off", phon:"TRAYD-awf", zh:"取舍；权衡", example:"There is a trade-off between faster delivery and lower cost."},
+      {cat:"Negotiation", term:"concession", phon:"kən-SEH-shən", zh:"让步", example:"We can offer a small concession if the order quantity increases."},
+      {cat:"Negotiation", term:"counteroffer", phon:"KOWN-ter-aw-fer", zh:"还盘；反报价", example:"We reviewed your counteroffer and need to adjust the payment term."},
+      {cat:"Negotiation", term:"walkaway point", phon:"WAWK-uh-way point", zh:"底线；不可接受点", example:"We should define our walkaway point before the negotiation."},
+      {cat:"Negotiation", term:"value-added service", phon:"VAL-yoo AD-id SER-vis", zh:"增值服务", example:"We can include remote technical support as a value-added service."},
+      {cat:"Negotiation", term:"long-term cooperation", phon:"long term koh-op-er-AY-shən", zh:"长期合作", example:"We hope to build long-term cooperation, not only one project."},
+
+      {cat:"Customer Style", term:"as discussed", phon:"az dis-KUHST", zh:"如前所述；正如讨论过的", example:"As discussed, we will send the revised drawing by tomorrow."},
+      {cat:"Customer Style", term:"kindly note", phon:"KYND-lee noht", zh:"请注意；烦请知悉", example:"Kindly note that the delivery date depends on deposit receipt."},
+      {cat:"Customer Style", term:"at your earliest convenience", phon:"at yor ER-lee-ist kən-VEE-nyəns", zh:"方便时尽早", example:"Please confirm the drawing at your earliest convenience."},
+      {cat:"Customer Style", term:"for your reference", phon:"for yor REF-er-əns", zh:"供你参考", example:"I attached the previous test report for your reference."},
+      {cat:"Customer Style", term:"please advise", phon:"pleez ad-VYZ", zh:"请告知；请指示", example:"Please advise whether we should proceed with the revised offer."},
+      {cat:"Customer Style", term:"gentle reminder", phon:"JEN-təl ri-MYN-der", zh:"温馨提醒；礼貌催促", example:"This is a gentle reminder that the balance payment is due this Friday."}
+    );
+
+    Object.keys(phraseGroups).forEach((key) => delete phraseGroups[key]);
+    Object.assign(phraseGroups, {
+      "Meetings": [
+        ["Let's align on the scope, timeline, commercial terms, and decision process.", "我们先对齐范围、时间、商务条款和决策流程。"],
+        ["Could you confirm the key decision maker and the expected approval date?", "请确认关键决策人和预计批准日期。"],
+        ["My understanding is that price is acceptable, but delivery time is the main concern.", "我的理解是价格可以接受，但交期是主要问题。"],
+        ["I will summarize the action items and owners after the call.", "会后我会总结行动项和负责人。"],
+        ["Before we close the meeting, are there any open points from your side?", "会议结束前，你们这边还有未关闭事项吗？"]
+      ],
+      "Project Tracking": [
+        ["The project is on track, but the drawing approval is still pending.", "项目按计划推进，但图纸批准仍待确认。"],
+        ["This open point may affect the production release if we do not close it this week.", "如果本周不关闭该问题，可能影响生产放行。"],
+        ["Please share a recovery plan with a realistic ETA.", "请提供一个带现实预计时间的追回计划。"],
+        ["We need to escalate this because the delay may affect the handover date.", "我们需要升级处理，因为延期可能影响移交日期。"],
+        ["Could you confirm the owner for each action item by end of today?", "请在今天结束前确认每个行动项的负责人。"]
+      ],
+      "Elevator": [
+        ["Please confirm whether EN 81-70 is mandatory for this project or only preferred.", "请确认 EN 81-70 是强制要求还是偏好要求。"],
+        ["The car operating panel layout needs to match the accessibility requirement.", "轿厢操纵盘布局需要符合无障碍要求。"],
+        ["We need the shaft, pit depth, overhead clearance, and travel height before final quotation.", "最终报价前我们需要井道、底坑、顶层高度和提升高度。"],
+        ["The hall call button height should be confirmed with the local consultant.", "厅外呼梯按钮高度应与当地顾问确认。"],
+        ["Please check if fire recall and emergency power operation are included in the specification.", "请确认规格中是否包含消防迫降和应急电源运行。"]
+      ],
+      "Delivery": [
+        ["We can dispatch the goods after the balance payment is received.", "收到尾款后我们可以发货。"],
+        ["Would you accept partial shipment for the urgent items?", "紧急物料是否可以接受分批发货？"],
+        ["Please send the shipping mark and consignee details before packing.", "请在包装前发送唛头和收货人信息。"],
+        ["The delivery window depends on customs clearance and vessel availability.", "交付窗口取决于清关和船期。"],
+        ["Under DAP terms, import duty and customs clearance are usually handled by the buyer.", "DAP 条款下一般由买方负责进口关税和清关。"]
+      ],
+      "Finance & Payment": [
+        ["Our standard payment term is 30% deposit and 70% before shipment.", "我们的标准付款条款是 30% 预付款，70% 发货前付清。"],
+        ["The quotation is VAT excluded unless otherwise stated.", "除非另有说明，报价不含增值税。"],
+        ["Please arrange the overdue payment so we can release the next shipment.", "请安排逾期款项，以便我们放行下一批货。"],
+        ["Bank charges should be borne by the payer, otherwise the received amount will be short.", "银行手续费应由付款方承担，否则到账金额会不足。"],
+        ["Could you confirm whether you need a proforma invoice or commercial invoice?", "请确认你需要形式发票还是商业发票。"]
+      ],
+      "Negotiation": [
+        ["There is limited room for negotiation because the current price already reflects the project volume.", "议价空间有限，因为当前价格已考虑项目数量。"],
+        ["We can review the price again if the quantity or payment term improves.", "如果数量或付款条款改善，我们可以重新评估价格。"],
+        ["The main trade-off is faster delivery versus lower cost.", "主要取舍是更快交付和更低成本。"],
+        ["This is our best and final offer based on the confirmed scope.", "这是基于已确认范围的最终最优报价。"],
+        ["We value long-term cooperation, but the risk needs to be shared fairly.", "我们重视长期合作，但风险需要公平分担。"]
+      ],
+      "Contracts": [
+        ["Please clarify whether installation is included in the scope of supply.", "请澄清安装是否包含在供货范围内。"],
+        ["The warranty period should start from handover, not shipment, if installation is delayed by the site.", "如果现场原因导致安装延期，质保期应从移交开始，而不是发货开始。"],
+        ["We cannot accept unlimited liability under this clause.", "我们无法接受该条款下的无限责任。"],
+        ["Any additional requirement should be handled as a change order.", "任何额外要求都应作为变更单处理。"],
+        ["The acceptance criteria must be clearly defined before contract signing.", "验收标准必须在合同签署前清楚定义。"]
+      ],
+      "Customer Style": [
+        ["European style: concise, direct, and evidence-based. Example: Please find attached the revised offer for your review.", "欧洲客户常见风格：简洁、直接、基于证据。"],
+        ["Italian style: relationship matters. Example: We appreciate your feedback and hope this solution works well for your client.", "意大利客户常见风格：重视关系和客户体验。"],
+        ["Indian style: frequent follow-up is normal. Example: Kindly confirm today so that we can proceed without delay.", "印度客户常见风格：频繁跟进较常见。"],
+        ["Neutral global style: To avoid misunderstanding, let me confirm the next steps in writing.", "通用国际表达：为避免误解，我用书面确认下一步。"],
+        ["Polite pressure: We are ready to proceed, but we need your confirmation by Friday to keep the schedule.", "礼貌施压：我们已准备推进，但需要周五前确认以保证进度。"]
+      ]
+    });
+
+    templates.length = 0;
+    templates.push(
+      ["Meeting Recap", "Subject: Meeting recap and next steps\n\nHi ...,\n\nThank you for the meeting today.\n\nMy understanding is:\n1. Scope: ...\n2. Key concern: ...\n3. Commercial term: ...\n4. Open points: ...\n\nAction items:\n- ... / Owner: ... / ETA: ...\n- ... / Owner: ... / ETA: ...\n\nPlease let me know if anything needs to be corrected."],
+      ["Project Delay Update", "Subject: Project update and recovery plan\n\nHi ...,\n\nI would like to update you on the current project status.\n\nThe project is behind schedule due to ...\nThe impact is ...\nOur recovery plan is:\n1. ...\n2. ...\n3. ...\n\nWe will keep you updated and escalate internally if the risk increases."],
+      ["Shipment Follow-up", "Subject: Shipment status and required confirmation\n\nHi ...,\n\nThe goods are ready / under production / pending final inspection.\n\nBefore dispatch, please confirm:\n1. Consignee details\n2. Shipping mark\n3. Freight forwarder contact\n4. Incoterms: DAP / DDP / EXW / FOB\n5. Required shipping documents\n\nOnce confirmed, we will arrange shipment accordingly."],
+      ["Payment Reminder", "Subject: Gentle reminder: balance payment before shipment\n\nHi ...,\n\nThis is a gentle reminder that the balance payment is due before shipment.\n\nOnce the payment is received, we can release the goods and share the shipping documents.\n\nPlease send the bank slip for our finance team's checking."],
+      ["Negotiation Reply", "Subject: Re: Commercial discussion\n\nHi ...,\n\nThank you for your feedback.\n\nWe reviewed your target price carefully. At the current scope and quantity, there is limited room for negotiation because ...\n\nHowever, we can consider the following options:\n1. Adjust quantity: ...\n2. Adjust payment term: ...\n3. Adjust delivery scope: ...\n\nPlease let us know which option is workable for you."],
+      ["Contract Clause Clarification", "Subject: Clarification on contract clause\n\nHi ...,\n\nWe reviewed the draft contract and would like to clarify the following clause:\n\nClause: ...\nConcern: ...\nSuggested wording: ...\nReason: ...\n\nPlease review with your legal team and share your comments."],
+      ["Elevator Technical Clarification", "Subject: Technical clarification for elevator project\n\nHi ...,\n\nTo finalize the solution and quotation, could you please confirm:\n1. Rated load and speed\n2. Travel height and number of stops\n3. Shaft size, pit depth, and overhead clearance\n4. COP/LOP material and button type\n5. EN 81-70 or other local standard requirement\n6. Fire recall or emergency operation requirement\n\nOnce we receive these details, we can proceed with the revised proposal."]
+    );
+
     const state = {
       activeCategory: "All",
-      phraseGroup: "Daily",
+      phraseGroup: "Meetings",
       flashIndex: 0,
       known: new Set(JSON.parse(localStorage.getItem("knownTerms") || "[]")),
       quiz: { current: null, correct: Number(localStorage.getItem("quizCorrect") || 0), attempts: Number(localStorage.getItem("quizAttempts") || 0) }
