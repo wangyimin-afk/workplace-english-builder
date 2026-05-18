@@ -488,6 +488,7 @@
       font-size: 13px;
     }
 
+    .voice-control input,
     .voice-control select {
       min-height: 38px;
       border: 1px solid var(--line);
@@ -496,6 +497,18 @@
       color: var(--text);
       padding: 0 10px;
       width: 100%;
+    }
+
+    .voice-control input {
+      min-width: 0;
+    }
+
+    .voice-note {
+      grid-column: 2;
+      margin-top: -4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
     }
 
     .phrase-list {
@@ -780,8 +793,16 @@
           <button class="switch-btn" id="showAllMeanings" aria-pressed="false">Off</button>
         </div>
         <label class="voice-control">
+          <span>TTS engine</span>
+          <select id="ttsMode" aria-label="TTS engine">
+            <option value="browser">Browser voice</option>
+            <option value="doubao">Doubao TTS</option>
+          </select>
           <span>Voice</span>
           <select id="voiceSelect" aria-label="English voice"></select>
+          <span>Doubao proxy</span>
+          <input id="ttsProxyUrl" placeholder="https://your-worker.your-name.workers.dev" autocomplete="off" />
+          <span class="voice-note" id="ttsStatus">Browser voice is used by default. Doubao needs a private proxy URL.</span>
         </label>
         <div class="flashcard">
           <svg class="blueprint" viewBox="0 0 240 180" aria-hidden="true">
@@ -2129,6 +2150,8 @@ anthropological=人类学的
       flashHistory: [],
       showAllMeanings: localStorage.getItem("showAllMeanings") === "true",
       selectedVoiceURI: localStorage.getItem("selectedVoiceURI") || "",
+      ttsMode: localStorage.getItem("ttsMode") || "browser",
+      ttsProxyUrl: localStorage.getItem("ttsProxyUrl") || "",
       voices: [],
       known: new Set(JSON.parse(localStorage.getItem("knownTerms") || "[]")),
       quiz: { current: null, correct: Number(localStorage.getItem("quizCorrect") || 0), attempts: Number(localStorage.getItem("quizAttempts") || 0) }
@@ -2148,6 +2171,8 @@ anthropological=人类学的
       localStorage.setItem("quizAttempts", String(state.quiz.attempts));
       localStorage.setItem("showAllMeanings", String(state.showAllMeanings));
       localStorage.setItem("selectedVoiceURI", state.selectedVoiceURI);
+      localStorage.setItem("ttsMode", state.ttsMode);
+      localStorage.setItem("ttsProxyUrl", state.ttsProxyUrl);
     }
 
     function updateStats() {
@@ -2343,9 +2368,20 @@ anthropological=人类学的
         .map((voice) => `<option value="${escapeHtml(voice.voiceURI)}">${escapeHtml(voice.name)} · ${escapeHtml(voice.lang)}</option>`)
         .join("");
       $("voiceSelect").value = state.selectedVoiceURI;
+      renderTtsSettings();
     }
 
-    function speak(text) {
+    function renderTtsSettings() {
+      $("ttsMode").value = state.ttsMode;
+      $("ttsProxyUrl").value = state.ttsProxyUrl;
+      $("ttsProxyUrl").disabled = state.ttsMode !== "doubao";
+      $("voiceSelect").disabled = state.ttsMode === "doubao";
+      $("ttsStatus").textContent = state.ttsMode === "doubao"
+        ? (state.ttsProxyUrl ? "Doubao TTS is enabled. If it fails, the app falls back to browser voice." : "Enter your private Doubao proxy URL to use cloud TTS.")
+        : "Browser voice is used by default. Doubao needs a private proxy URL.";
+    }
+
+    function speakWithBrowser(text) {
       if (!("speechSynthesis" in window)) return;
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
@@ -2359,6 +2395,38 @@ anthropological=人类学的
       utterance.rate = .82;
       utterance.pitch = 1;
       window.speechSynthesis.speak(utterance);
+    }
+
+    async function speakWithDoubao(text) {
+      const endpoint = state.ttsProxyUrl.trim();
+      if (!endpoint) throw new Error("Missing Doubao proxy URL");
+      $("ttsStatus").textContent = "Generating Doubao voice...";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({text})
+      });
+      if (!response.ok) throw new Error(`Doubao proxy failed: ${response.status}`);
+      const result = await response.json();
+      if (!result.audioBase64) throw new Error(result.error || "No audio returned");
+      const mimeType = result.mimeType || "audio/mpeg";
+      const audio = new Audio(`data:${mimeType};base64,${result.audioBase64}`);
+      await audio.play();
+      $("ttsStatus").textContent = "Doubao voice played.";
+    }
+
+    async function speak(text) {
+      if (state.ttsMode !== "doubao") {
+        speakWithBrowser(text);
+        return;
+      }
+      try {
+        await speakWithDoubao(text);
+      } catch (error) {
+        $("ttsStatus").textContent = "Doubao failed. Falling back to browser voice.";
+        console.warn(error);
+        speakWithBrowser(text);
+      }
     }
 
     function renderPhrases() {
@@ -2513,6 +2581,16 @@ anthropological=人类学的
       state.selectedVoiceURI = $("voiceSelect").value;
       saveProgress();
     });
+    $("ttsMode").addEventListener("change", () => {
+      state.ttsMode = $("ttsMode").value;
+      saveProgress();
+      renderTtsSettings();
+    });
+    $("ttsProxyUrl").addEventListener("input", () => {
+      state.ttsProxyUrl = $("ttsProxyUrl").value.trim();
+      saveProgress();
+      renderTtsSettings();
+    });
     $("prevFlash").addEventListener("click", () => {
       if (!state.flashHistory.length) return;
       state.flashIndex = state.flashHistory.pop();
@@ -2544,6 +2622,7 @@ anthropological=人类学的
     renderTabs();
     renderMeaningToggle();
     renderVoiceSelect();
+    renderTtsSettings();
     if ("speechSynthesis" in window) {
       window.speechSynthesis.onvoiceschanged = renderVoiceSelect;
     }
