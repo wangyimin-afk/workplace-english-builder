@@ -806,7 +806,7 @@
           <span>Show Chinese meanings by default</span>
           <button class="switch-btn" id="showAllMeanings" aria-pressed="false">Off</button>
         </div>
-        <label class="voice-control">
+        <div class="voice-control">
           <span>TTS engine</span>
           <select id="ttsMode" aria-label="TTS engine">
             <option value="browser">Browser voice</option>
@@ -819,7 +819,7 @@
           <span></span>
           <button id="enableDoubao" type="button">Confirm enable Doubao</button>
           <span class="voice-note" id="ttsStatus">Browser voice is used by default. Doubao needs confirmation each session.</span>
-        </label>
+        </div>
         <div class="flashcard">
           <svg class="blueprint" viewBox="0 0 240 180" aria-hidden="true">
             <path d="M20 30h80v40H20zM140 24h70v70h-70zM70 122h120v34H70z" fill="none" stroke="currentColor" stroke-width="4"/>
@@ -2389,9 +2389,9 @@ anthropological=人类学的
     function renderTtsSettings() {
       $("ttsMode").value = state.ttsMode;
       $("voiceSelect").disabled = state.ttsMode === "doubao" && state.ttsConnected;
-      $("enableDoubao").disabled = state.ttsMode !== "doubao";
+      $("enableDoubao").disabled = !$("ttsCredential").value.trim();
       if (state.ttsMode !== "doubao") {
-        $("ttsStatus").textContent = "Browser voice is active. Choose Doubao TTS, paste your API Key or Worker URL, then confirm.";
+        $("ttsStatus").textContent = "Browser voice is active. Paste your API Key or Worker URL, then confirm to use Doubao.";
       } else if (state.ttsConnected) {
         $("ttsStatus").textContent = "Doubao TTS is connected for this session. Reopen the app to reset.";
       } else {
@@ -2708,13 +2708,13 @@ anthropological=人类学的
       state.ttsMode = $("ttsMode").value;
       if (state.ttsMode !== "doubao") {
         state.ttsConnected = false;
-        state.ttsCredential = "";
-        $("ttsCredential").value = "";
       }
       renderTtsSettings();
     });
+    $("ttsCredential").addEventListener("input", renderTtsSettings);
     $("enableDoubao").addEventListener("click", () => {
       state.ttsCredential = $("ttsCredential").value.trim();
+      if (state.ttsCredential) state.ttsMode = "doubao";
       state.ttsConnected = state.ttsMode === "doubao" && Boolean(state.ttsCredential);
       renderTtsSettings();
     });
