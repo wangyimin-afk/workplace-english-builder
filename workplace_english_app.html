@@ -1998,6 +1998,39 @@ anthropological=人类学的
       });
     });
 
+    const personalDailyTerms = [
+      ["internally", "内部地；在内部", "We need to review this internally before replying to the client."],
+      ["sort", "整理；分类", "Please sort the files by project name and date."],
+      ["messy", "杂乱的；混乱的", "The information is a bit messy, so I need to sort it out first."],
+      ["sent by the client", "客户发来的", "This is the document sent by the client yesterday."],
+      ["review it internally", "内部审阅；内部评审", "Let me review it internally and get back to you tomorrow."],
+      ["raise some questions", "提出一些疑问", "After checking the document, we may need to raise some questions."],
+      ["sort out", "整理清楚；理顺；解决", "I will sort out the comments and send you a summary."],
+      ["reply to the client", "回复客户", "Please reply to the client after the technical team confirms it."],
+      ["rather messy", "比较混乱", "The client's comments are rather messy, so I summarized them in a table."],
+      ["client comments", "客户意见；客户备注", "I have sorted out the client comments for internal review."],
+      ["internal review", "内部评审；内部审核", "The drawing is still under internal review."],
+      ["follow up internally", "在内部跟进", "I will follow up internally and update you once I have feedback."],
+      ["clarify the points", "澄清这些点", "Could you help clarify the points marked in red?"],
+      ["summarize the feedback", "汇总反馈", "I will summarize the feedback and reply to the client."],
+      ["organize the information", "整理信息", "Please organize the information before the meeting."],
+      ["clean up the file", "整理文件；清理文件", "I need to clean up the file before sending it out."],
+      ["group the items", "把项目分组/分类", "Could you group the items by priority?"],
+      ["make it clearer", "让它更清楚", "I rewrote the message to make it clearer."],
+      ["too scattered", "太分散；太零散", "The information is too scattered, so I put it into one list."],
+      ["get back to the client", "回复客户；给客户反馈", "We will get back to the client after the internal review."]
+    ];
+
+    personalDailyTerms.forEach(([term, zh, example]) => {
+      terms.push({
+        cat: "个人日常使用",
+        term,
+        phon: "",
+        zh,
+        example
+      });
+    });
+
     Object.keys(phraseGroups).forEach((key) => delete phraseGroups[key]);
     Object.assign(phraseGroups, {
       "Meetings": [
@@ -2044,6 +2077,16 @@ anthropological=人类学的
         ["This device complies with part 15 of the FCC Rules.", "本设备符合 FCC 规则第 15 部分。"],
         ["Unauthorized changes or modifications may void wireless compliance.", "未经授权的变更或改装可能导致无线合规失效。"],
         ["Use compliant peripheral devices and shielded cables to reduce interference.", "使用合规外围设备和屏蔽电缆，以降低干扰。"]
+      ],
+      "个人日常使用": [
+        ["This was sent by the client, and we need to review it internally first.", "这是客户发来的，我们需要先内部审阅。"],
+        ["The information is rather messy, so I will sort it out before replying.", "这些信息比较混乱，所以我会先整理好再回复。"],
+        ["I have raised some questions for the technical team to check.", "我已经提出了一些问题给技术团队确认。"],
+        ["Let me sort out the client comments and send you a clear summary.", "我先整理客户意见，然后发你一份清楚的汇总。"],
+        ["After the internal review, we can reply to the client with confirmed points.", "内部评审后，我们可以用已确认的信息回复客户。"],
+        ["Could you help organize the information by topic?", "你能帮忙按主题整理这些信息吗？"],
+        ["The comments are a bit scattered, so I grouped them by priority.", "这些意见有点零散，所以我按优先级分组了。"],
+        ["I will follow up internally and get back to the client as soon as possible.", "我会内部跟进，并尽快回复客户。"]
       ],
       "Negotiation": [
         ["There is limited room for negotiation because the current price already reflects the project volume.", "议价空间有限，因为当前价格已考虑项目数量。"],
