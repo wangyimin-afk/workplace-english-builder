@@ -809,6 +809,12 @@
         <div class="voice-control">
           <span>Voice</span>
           <select id="voiceSelect" aria-label="English voice"></select>
+          <span>Accent practice</span>
+          <select id="accentMode" aria-label="Accent practice">
+            <option value="neutral">Neutral English</option>
+            <option value="indian">Indian English</option>
+            <option value="italian">Italian English</option>
+          </select>
         </div>
         <div class="flashcard">
           <svg class="blueprint" viewBox="0 0 240 180" aria-hidden="true">
@@ -2156,6 +2162,7 @@ anthropological=人类学的
       flashHistory: [],
       showAllMeanings: localStorage.getItem("showAllMeanings") === "true",
       selectedVoiceURI: localStorage.getItem("selectedVoiceURI") || "",
+      accentMode: localStorage.getItem("accentMode") || "neutral",
       voices: [],
       known: new Set(JSON.parse(localStorage.getItem("knownTerms") || "[]")),
       quiz: { current: null, correct: Number(localStorage.getItem("quizCorrect") || 0), attempts: Number(localStorage.getItem("quizAttempts") || 0) }
@@ -2175,6 +2182,7 @@ anthropological=人类学的
       localStorage.setItem("quizAttempts", String(state.quiz.attempts));
       localStorage.setItem("showAllMeanings", String(state.showAllMeanings));
       localStorage.setItem("selectedVoiceURI", state.selectedVoiceURI);
+      localStorage.setItem("accentMode", state.accentMode);
     }
 
     function updateStats() {
@@ -2346,10 +2354,31 @@ anthropological=人类学的
       return score;
     }
 
+    function accentVoiceScore(voice, accent) {
+      const name = `${voice.name} ${voice.lang}`.toLowerCase();
+      let score = preferredVoiceScore(voice);
+      if (accent === "indian") {
+        if (/en-in|india|indian/.test(name)) score += 60;
+        if (/rishi|lekha|aditi|heera|priya/.test(name)) score += 20;
+      }
+      if (accent === "italian") {
+        if (/it-it|italy|italian|italiano|italia/.test(name)) score += 60;
+        if (/alice|elsa|federica|paola|luca/.test(name)) score += 20;
+      }
+      return score;
+    }
+
     function selectedVoice() {
       return state.voices.find((voice) => voice.voiceURI === state.selectedVoiceURI) ||
         [...state.voices].filter((voice) => voice.lang.toLowerCase().startsWith("en")).sort((a, b) => preferredVoiceScore(b) - preferredVoiceScore(a))[0] ||
         null;
+    }
+
+    function selectedAccentVoice() {
+      if (state.accentMode === "neutral") return selectedVoice();
+      return [...state.voices]
+        .sort((a, b) => accentVoiceScore(b, state.accentMode) - accentVoiceScore(a, state.accentMode))[0] ||
+        selectedVoice();
     }
 
     function renderVoiceSelect() {
@@ -2358,7 +2387,11 @@ anthropological=人类学的
         $("voiceSelect").disabled = true;
         return;
       }
-      state.voices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.toLowerCase().startsWith("en"));
+      state.voices = window.speechSynthesis.getVoices().filter((voice) => {
+        const lang = voice.lang.toLowerCase();
+        const name = voice.name.toLowerCase();
+        return lang.startsWith("en") || lang.startsWith("it") || /india|indian|italian|italy|italiano/.test(name);
+      });
       if (!state.voices.length) {
         $("voiceSelect").innerHTML = `<option>Loading voices...</option>`;
         return;
@@ -2370,21 +2403,22 @@ anthropological=人类学的
         .map((voice) => `<option value="${escapeHtml(voice.voiceURI)}">${escapeHtml(voice.name)} · ${escapeHtml(voice.lang)}</option>`)
         .join("");
       $("voiceSelect").value = state.selectedVoiceURI;
+      $("accentMode").value = state.accentMode;
     }
 
     function speak(text) {
       if (!("speechSynthesis" in window)) return;
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      const voice = selectedVoice();
+      const voice = selectedAccentVoice();
       if (voice) {
         utterance.voice = voice;
-        utterance.lang = voice.lang;
+        utterance.lang = state.accentMode === "indian" ? "en-IN" : voice.lang;
       } else {
-        utterance.lang = "en-US";
+        utterance.lang = state.accentMode === "indian" ? "en-IN" : "en-US";
       }
-      utterance.rate = .82;
-      utterance.pitch = 1;
+      utterance.rate = state.accentMode === "neutral" ? .82 : .78;
+      utterance.pitch = state.accentMode === "italian" ? 1.06 : 1;
       window.speechSynthesis.speak(utterance);
     }
 
@@ -2538,6 +2572,10 @@ anthropological=人类学的
     });
     $("voiceSelect").addEventListener("change", () => {
       state.selectedVoiceURI = $("voiceSelect").value;
+      saveProgress();
+    });
+    $("accentMode").addEventListener("change", () => {
+      state.accentMode = $("accentMode").value;
       saveProgress();
     });
     $("prevFlash").addEventListener("click", () => {
