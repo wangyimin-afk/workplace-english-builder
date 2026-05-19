@@ -362,6 +362,50 @@
       line-height: 1.5;
     }
 
+    .meeting-toolbar {
+      margin-bottom: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .meeting-card {
+      min-height: 0;
+    }
+
+    .meeting-question {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .meeting-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .meeting-block {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px;
+      background: #fbfcfb;
+    }
+
+    .meeting-block b {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--brand);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .meeting-block span {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
     .actions {
       display: flex;
       gap: 8px;
@@ -671,6 +715,7 @@
 
       .stats,
       .workspace,
+      .meeting-grid,
       .card-list {
         grid-template-columns: 1fr;
       }
@@ -729,6 +774,10 @@
         <button data-section="phrases">
           <svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z"/></svg>
           Phrases
+        </button>
+        <button data-section="meetingLab">
+          <svg viewBox="0 0 24 24"><path d="M7 8h10M7 12h7"/><path d="M21 12a8 8 0 0 1-8 8H7l-4 2 1.5-4.5A8 8 0 1 1 21 12Z"/></svg>
+          Meeting Lab
         </button>
         <button data-section="quiz">
           <svg viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 1 5.2 2c-.8.7-1.2 1.1-1.2 2v1"/><path d="M12 20h.01"/><circle cx="12" cy="12" r="10"/></svg>
@@ -857,6 +906,17 @@
       <section id="phrases" class="section">
         <div class="tabs" id="phraseTabs"></div>
         <div class="card-list" id="phraseCards"></div>
+      </section>
+
+      <section id="meetingLab" class="section">
+        <div class="meeting-toolbar">
+          <div class="tabs" id="meetingTabs"></div>
+          <button class="ghost-btn" id="shuffleMeeting">
+            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="m4 4 5 5"/></svg>
+            Shuffle
+          </button>
+        </div>
+        <div class="card-list" id="meetingCards"></div>
       </section>
 
       <section id="quiz" class="section">
@@ -1014,6 +1074,7 @@
       dashboard: ["Dashboard", "A focused English practice app for elevator projects, customer meetings, delivery follow-up, finance, contracts, negotiation, and international business communication."],
       flashcards: ["Flashcards", "Review professional terms you are likely to use in calls, emails, technical reviews, quotation discussions, and project follow-up."],
       phrases: ["Phrase Bank", "Short, practical sentences for real meetings, delivery updates, payment follow-up, negotiation, and customer communication."],
+      meetingLab: ["Meeting Lab", "Anonymized customer-meeting drills from your V1/V2/V3 training materials: listen for keywords, answer briefly, then drive the next action."],
       quiz: ["Quiz", "Train fast recognition of meaning and usage."],
       coach: ["Speaking Coach", "Rewrite Chinese-style English into clear workplace English and practice speaking aloud."],
       templates: ["Email Templates", "Reusable English structures for meeting recaps, shipment updates, payment reminders, negotiation, contract clarification, and customer follow-up."],
@@ -2081,6 +2142,253 @@ anthropological=人类学的
       });
     });
 
+    const overseasMeetingTerms = [
+      ["meeting agenda", "会议议程", "Let's confirm the meeting agenda before we start."],
+      ["customer visit", "客户来访", "This customer visit includes a showroom tour and a project discussion."],
+      ["factory tour", "工厂参观", "During the factory tour, we can explain our main processes."],
+      ["project requirement", "项目需求", "Could you clarify the project requirement before quotation?"],
+      ["decision process", "决策流程", "It would help if we understand your decision process."],
+      ["action item", "行动项", "I will summarize the action items after the meeting."],
+      ["owner", "负责人", "Please assign an owner for each open point."],
+      ["timeline", "时间线；计划周期", "The timeline depends on drawing approval and sample confirmation."],
+      ["quantity forecast", "数量预测", "A quantity forecast helps us prepare a more accurate quotation."],
+      ["preliminary timeline", "初步时间计划", "We can provide a preliminary timeline after reviewing the drawings."],
+      ["manufacturing capability", "制造能力", "Our manufacturing capability supports both standard and customized products."],
+      ["integrated manufacturing", "一体化制造", "Integrated manufacturing helps improve quality control and delivery flexibility."],
+      ["customized solution", "定制化解决方案", "We can propose a customized solution based on site conditions."],
+      ["non-standard project", "非标项目", "For a non-standard project, we need more technical details before pricing."],
+      ["vertical integration", "垂直整合", "Vertical integration means more processes are controlled in-house."],
+      ["traceability", "可追溯性", "Traceability is important for quality control and after-sales analysis."],
+      ["quality control", "质量控制", "Quality control starts from incoming materials and continues through final inspection."],
+      ["final inspection", "最终检验", "Each unit should pass final inspection before shipment."],
+      ["functional test", "功能测试", "The product must pass a functional test before delivery."],
+      ["sample approval", "样品确认", "Mass production can start after sample approval."],
+      ["drawing approval", "图纸确认", "The delivery schedule depends on drawing approval."],
+      ["configuration", "配置", "Please confirm the product configuration and interface requirements."],
+      ["interface requirement", "接口要求", "The interface requirement must match the elevator controller."],
+      ["protocol document", "协议文件", "Please share the protocol document for technical review."],
+      ["commissioning", "调试", "Commissioning support can be discussed based on project needs."],
+      ["after-sales support", "售后支持", "After-sales support should include spare parts and technical feedback."],
+      ["spare parts", "备件", "We recommend keeping critical spare parts for urgent maintenance."],
+      ["alternative component", "替代零部件", "If the original component is unavailable, we can review an alternative component."],
+      ["warranty scope", "质保范围", "The warranty scope should be clarified before contract signing."],
+      ["commercial terms", "商务条款", "Let's align on price, payment, delivery, and warranty as commercial terms."],
+      ["quotation basis", "报价基础", "The quotation basis includes quantity, material, configuration, and delivery term."],
+      ["price validity", "报价有效期", "Please check the price validity before placing the order."],
+      ["lead time", "交期；生产周期", "Lead time starts after technical and commercial confirmation."],
+      ["delivery term", "交货条款", "Please confirm the delivery term and destination."],
+      ["payment term", "付款条款", "The payment term affects production release and shipment."],
+      ["contract clause", "合同条款", "We need to review this contract clause internally."],
+      ["liability", "责任；赔偿责任", "Liability should be limited to a reasonable and agreed scope."],
+      ["open point", "未关闭事项", "This open point may affect the delivery schedule."],
+      ["clarification", "澄清；说明", "Let me ask for clarification before giving a final answer."],
+      ["escalate internally", "内部升级处理", "We may need to escalate internally if the risk affects delivery."],
+      ["next action", "下一步行动", "The next action is to confirm drawings and quantity forecast."]
+    ];
+
+    overseasMeetingTerms.forEach(([term, zh, example]) => {
+      terms.push({
+        cat: "Overseas Meeting Lab",
+        term,
+        phon: "",
+        zh,
+        example
+      });
+    });
+
+    const meetingLabScenarios = [
+      {
+        group: "Opening",
+        title: "Start the meeting",
+        question: "Could you briefly introduce today's agenda?",
+        zh: "你能简单介绍一下今天的会议议程吗？",
+        keywords: "agenda, factory tour, product discussion, open points, next actions",
+        short: "Sure. We will first confirm the meeting purpose, then review the main product scope, discuss project requirements, and close with action items.",
+        strong: "Sure. I suggest we use a simple structure today: first, align on the meeting purpose; second, review the product and factory capability at a high level; third, discuss your project requirements, quotation basis, quality expectations, and delivery plan; finally, we will summarize open points and owners.",
+        follow: "Does this agenda work for you, or would you like to add any topic first?"
+      },
+      {
+        group: "Opening",
+        title: "Confirm customer purpose",
+        question: "What would you like to achieve from this visit?",
+        zh: "你们这次来访希望达成什么目标？",
+        keywords: "purpose, priority, concern, expectation, decision",
+        short: "We would like to understand your priorities and identify the next practical steps after the visit.",
+        strong: "Our goal is to understand your real project priorities, including product configuration, quality expectations, commercial terms, timeline, and any technical risks. Based on that, we can prepare a clearer proposal and follow-up action list.",
+        follow: "May I confirm whether your priority is product selection, price, delivery, technical integration, or supplier qualification?"
+      },
+      {
+        group: "Company",
+        title: "Company introduction",
+        question: "Can you introduce your company in one minute?",
+        zh: "你能用一分钟介绍一下你们公司吗？",
+        keywords: "elevator fixtures, signalization, customized projects, engineering, manufacturing",
+        short: "We focus on elevator signalization and interaction products, including COPs, LOPs, displays, buttons, and customized fixture solutions.",
+        strong: "We are a specialized supplier of elevator signalization and interaction products. Our main scope includes car operating panels, landing operating panels, displays, buttons, access control interfaces, and customized fixture solutions. For overseas projects, our value is not only production, but also engineering support, customization, quality control, and project coordination.",
+        follow: "Would you like me to focus more on our product range, manufacturing process, or project support capability?"
+      },
+      {
+        group: "Company",
+        title: "Main advantage",
+        question: "What is your main advantage compared with other suppliers?",
+        zh: "和其他供应商相比，你们的主要优势是什么？",
+        keywords: "customization, integration, response, quality, engineering support",
+        short: "Our main advantage is customized project capability supported by engineering and manufacturing coordination.",
+        strong: "Our main advantage is the ability to handle non-standard requirements in a structured way. We can review drawings, clarify functions, check materials and finishes, coordinate engineering and production, and turn customer requirements into practical project actions. This is especially useful for customized elevator fixture projects.",
+        follow: "If you share one typical project case, I can explain how we would handle it step by step."
+      },
+      {
+        group: "Factory Tour",
+        title: "Explain factory tour value",
+        question: "Why is this process important for customers?",
+        zh: "这个流程对客户为什么重要？",
+        keywords: "quality control, traceability, consistency, delivery efficiency",
+        short: "It helps improve quality control, traceability, and delivery consistency.",
+        strong: "This process is important because it reduces uncertainty. It helps us control quality, trace materials, improve consistency, and identify problems earlier before final assembly or shipment. For customized overseas projects, this reduces communication cost and delivery risk.",
+        follow: "Would you like to see how we record inspection results for this process?"
+      },
+      {
+        group: "Factory Tour",
+        title: "Customization in production",
+        question: "Can this process support customized products?",
+        zh: "这个流程能支持定制产品吗？",
+        keywords: "material, finish, layout, wiring, function configuration",
+        short: "Yes. The material, finish, layout, wiring, and functions can be adjusted based on project requirements.",
+        strong: "Yes. For customized projects, we usually confirm the drawing, dimensions, material, surface finish, button layout, display type, wiring, interface, and functional configuration first. After that, engineering and production can review feasibility and define the correct workflow.",
+        follow: "Could you share the drawing or a reference sample so we can check feasibility?"
+      },
+      {
+        group: "Product",
+        title: "Before quotation",
+        question: "What information do you need before quotation?",
+        zh: "报价前你们需要哪些信息？",
+        keywords: "drawing, dimensions, quantity, configuration, interface, delivery term",
+        short: "We need drawings, dimensions, quantity, material, configuration, interface requirements, and delivery terms.",
+        strong: "Before quotation, we need enough information to avoid assumptions. The key items are drawings, dimensions, material and finish, product configuration, button or display layout, interface or protocol requirements, quantity forecast, target delivery schedule, and delivery term. If any item is unclear, we can quote with assumptions and mark them clearly.",
+        follow: "Can we go through these items one by one and mark what is confirmed and what is still open?"
+      },
+      {
+        group: "Product",
+        title: "Customization feasibility",
+        question: "Can you customize this model for our project?",
+        zh: "你们能按我们项目定制这个型号吗？",
+        keywords: "feasibility, drawing review, sample, risk, approval",
+        short: "Yes, but we need to review the drawing and confirm feasibility first.",
+        strong: "Yes, customization is possible, but we should review feasibility carefully. We need to check the mechanical structure, electronic configuration, interface, appearance requirement, installation condition, and certification or local market needs. If the risk is high, we can start with a sample or prototype before mass production.",
+        follow: "Please send the drawing and key requirements, and we will identify the open points."
+      },
+      {
+        group: "Commercial",
+        title: "Price concern",
+        question: "Your price is higher than another supplier. Why?",
+        zh: "你们价格比其他供应商高，为什么？",
+        keywords: "scope, quality level, customization, service, total cost",
+        short: "The price depends on scope, quality level, customization, and service responsibility.",
+        strong: "I understand the concern. To compare price fairly, we need to compare the same scope: material, finish, configuration, testing, packaging, warranty, delivery term, and technical support. Sometimes a lower unit price may not include the same quality control or project support. We can review the scope together and see where the difference comes from.",
+        follow: "Could you share the comparison scope, not only the unit price?"
+      },
+      {
+        group: "Commercial",
+        title: "Lead time pressure",
+        question: "Can you shorten the lead time?",
+        zh: "你们能缩短交期吗？",
+        keywords: "drawing approval, material availability, production slot, partial shipment",
+        short: "We can check it, but it depends on drawing approval, material availability, and production capacity.",
+        strong: "We can review possible options, but we should be realistic. Lead time depends on technical confirmation, drawing approval, material availability, production slot, testing, and shipment arrangement. If the full delivery date is difficult, we can discuss partial shipment or prioritize urgent items.",
+        follow: "Which items are most urgent, and what is the latest acceptable delivery date?"
+      },
+      {
+        group: "Commercial",
+        title: "Payment term",
+        question: "Can you accept better payment terms?",
+        zh: "你们能接受更好的付款条款吗？",
+        keywords: "risk, order value, credit, long-term cooperation, approval",
+        short: "We can review it internally based on order value, risk, and cooperation history.",
+        strong: "Payment terms are linked to financial risk and internal approval. For a new or highly customized project, we usually need a safer payment structure because materials and engineering work start early. If the order value, forecast, or cooperation history improves, we can discuss more flexible terms.",
+        follow: "Could you share your expected payment term and project volume so we can review it properly?"
+      },
+      {
+        group: "Contract",
+        title: "Contract clause concern",
+        question: "Can you accept this liability clause?",
+        zh: "你们能接受这个责任条款吗？",
+        keywords: "liability, reasonable scope, direct loss, limitation, legal review",
+        short: "We need to review it internally because liability should stay within a reasonable and agreed scope.",
+        strong: "We understand the need for clear responsibility, but this clause may create unlimited or unclear liability. We need to review it with our internal team and suggest wording that is fair, specific, and linked to direct loss, agreed scope, and actual project responsibility.",
+        follow: "Can we mark this clause as open and come back with proposed wording?"
+      },
+      {
+        group: "Quality",
+        title: "Quality issue response",
+        question: "What happens if there is a quality issue after delivery?",
+        zh: "交付后如果有质量问题怎么办？",
+        keywords: "evidence, analysis, containment, corrective action, replacement",
+        short: "We will collect evidence, analyze the root cause, and provide corrective action or replacement if needed.",
+        strong: "If a quality issue occurs, we first need clear evidence such as photos, videos, serial number, installation condition, and failure description. Then we analyze whether it is material, production, installation, transportation, or usage related. Based on the result, we can provide containment, replacement, repair, or corrective action.",
+        follow: "Could you send photos, videos, and the product label so we can start analysis?"
+      },
+      {
+        group: "Quality",
+        title: "Spare parts strategy",
+        question: "Do you recommend keeping spare parts?",
+        zh: "你们建议备一些备件吗？",
+        keywords: "critical items, maintenance, lead time, urgent replacement",
+        short: "Yes, for critical items we recommend keeping spare parts to reduce downtime.",
+        strong: "For overseas projects, spare parts are important because urgent replacement may be affected by shipping time, customs, and local maintenance schedules. We recommend identifying critical items, expected failure risk, and minimum stock level before handover.",
+        follow: "We can prepare a suggested spare parts list based on quantity and site conditions."
+      },
+      {
+        group: "Technical",
+        title: "Protocol integration",
+        question: "Can your product communicate with our controller?",
+        zh: "你们产品能和我们的控制器通信吗？",
+        keywords: "interface, protocol, signal, testing, commissioning",
+        short: "It depends on the interface and protocol. We need the protocol document for review.",
+        strong: "It depends on the controller interface, communication protocol, signal definition, and test environment. If you can provide the protocol document and expected functions, our technical team can review feasibility and define the required testing or commissioning steps.",
+        follow: "Please share the protocol document and a list of required functions."
+      },
+      {
+        group: "Technical",
+        title: "Unclear technical question",
+        question: "Can you answer this technical detail now?",
+        zh: "这个技术细节你现在能回答吗？",
+        keywords: "confirm internally, avoid wrong answer, follow up, technical team",
+        short: "I do not want to give an inaccurate answer. Let me confirm with our technical team and come back to you.",
+        strong: "This is a detailed technical point, and I want to avoid giving you an inaccurate answer during the meeting. I will record it as an open point, confirm internally with the responsible engineer, and reply with a clear answer and supporting information.",
+        follow: "Could you confirm the exact application scenario so we check the right condition?"
+      },
+      {
+        group: "Control",
+        title: "Ask for repetition",
+        question: "The customer speaks fast and you miss the point.",
+        zh: "客户说得太快，你没听清重点。",
+        keywords: "repeat, confirm, key point, avoid misunderstanding",
+        short: "Sorry, could you repeat the last point more slowly?",
+        strong: "Sorry, I want to make sure I understand correctly. Could you repeat the last point more slowly? My understanding is that your concern is about delivery risk and technical confirmation. Is that correct?",
+        follow: "Let me repeat it back: your main point is ..., correct?"
+      },
+      {
+        group: "Control",
+        title: "Summarize open points",
+        question: "How do you close the meeting professionally?",
+        zh: "怎样专业地结束会议？",
+        keywords: "summary, open points, owners, timeline, next meeting",
+        short: "Before we close, let me summarize the open points, owners, and next actions.",
+        strong: "Before we close the meeting, let me summarize what we agreed today. We have confirmed the main product scope, but drawings, quantity forecast, interface requirements, and delivery schedule are still open. We will assign owners and target dates for each item and send a written recap after the meeting.",
+        follow: "Is there anything missing or anything you would like to correct?"
+      },
+      {
+        group: "Culture",
+        title: "Lunch small talk",
+        question: "How do you make simple conversation during lunch?",
+        zh: "午餐时怎样自然地闲聊？",
+        keywords: "travel, food, schedule, first visit, polite",
+        short: "Is this your first time visiting this city? How has your trip been so far?",
+        strong: "I hope the schedule is not too tight today. Is this your first time visiting this city? If you have time after the meeting, I can recommend a few simple local places or help arrange transportation back to the hotel.",
+        follow: "Do you prefer a lighter meal, or would you like to try something local?"
+      }
+    ];
+
     Object.keys(phraseGroups).forEach((key) => delete phraseGroups[key]);
     Object.assign(phraseGroups, {
       "Meetings": [
@@ -2127,6 +2435,16 @@ anthropological=人类学的
         ["This device complies with part 15 of the FCC Rules.", "本设备符合 FCC 规则第 15 部分。"],
         ["Unauthorized changes or modifications may void wireless compliance.", "未经授权的变更或改装可能导致无线合规失效。"],
         ["Use compliant peripheral devices and shielded cables to reduce interference.", "使用合规外围设备和屏蔽电缆，以降低干扰。"]
+      ],
+      "Overseas Meeting Lab": [
+        ["Let me confirm the meeting purpose before we go into details.", "进入细节前，我先确认一下会议目的。"],
+        ["Could you help me understand your main priority for this project?", "你能帮我了解这个项目的主要优先事项吗？"],
+        ["I do not want to give an inaccurate answer, so I will confirm internally first.", "我不想给出不准确的答复，所以我会先内部确认。"],
+        ["For a fair price comparison, we need to compare the same scope.", "为了公平比较价格，我们需要比较相同范围。"],
+        ["The lead time depends on drawing approval, material availability, and production capacity.", "交期取决于图纸确认、物料可得性和产能。"],
+        ["Please share the protocol document so our technical team can review feasibility.", "请提供协议文件，以便我们的技术团队评估可行性。"],
+        ["Before we close, let me summarize the open points, owners, and next actions.", "会议结束前，我总结一下未关闭事项、负责人和下一步行动。"],
+        ["My understanding is that your main concern is delivery risk. Is that correct?", "我的理解是你们主要担心交付风险，对吗？"]
       ],
       "个人日常使用": [
         ["This was sent by the client, and we need to review it internally first.", "这是客户发来的，我们需要先内部审阅。"],
@@ -2180,6 +2498,7 @@ anthropological=人类学的
     const state = {
       activeCategory: "All",
       phraseGroup: "Meetings",
+      meetingGroup: "All",
       flashIndex: 0,
       flashHistory: [],
       showAllMeanings: localStorage.getItem("showAllMeanings") === "true",
@@ -2252,6 +2571,16 @@ anthropological=人类学的
           state.phraseGroup = btn.dataset.group;
           renderTabs();
           renderPhrases();
+        });
+      });
+
+      const meetingGroups = ["All", ...unique(meetingLabScenarios.map((item) => item.group))];
+      $("meetingTabs").innerHTML = meetingGroups.map((group) => `<button class="${group === state.meetingGroup ? "active" : ""}" data-meeting-group="${group}">${group}</button>`).join("");
+      $("meetingTabs").querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.meetingGroup = btn.dataset.meetingGroup;
+          renderTabs();
+          renderMeetingLab();
         });
       });
     }
@@ -2460,6 +2789,37 @@ anthropological=人类学的
       $("phraseCards").querySelectorAll("[data-speak]").forEach((btn) => btn.addEventListener("click", () => speak(btn.dataset.speak)));
     }
 
+    function filteredMeetingScenarios() {
+      return state.meetingGroup === "All" ? meetingLabScenarios : meetingLabScenarios.filter((item) => item.group === state.meetingGroup);
+    }
+
+    function renderMeetingLab(items = filteredMeetingScenarios()) {
+      $("meetingCards").innerHTML = items.map((item, index) => `
+        <article class="card meeting-card">
+          <div class="card-top">
+            <div>
+              <span class="tag">${escapeHtml(item.group)}</span>
+              <h3 class="meeting-question">${escapeHtml(item.question)}</h3>
+            </div>
+            <span class="tag">Drill ${index + 1}</span>
+          </div>
+          <div class="meaning">${escapeHtml(item.zh)}</div>
+          <div class="meeting-grid">
+            <div class="meeting-block"><b>Listen For</b><span>${escapeHtml(item.keywords)}</span></div>
+            <div class="meeting-block"><b>Short Answer</b><span>${escapeHtml(item.short)}</span></div>
+            <div class="meeting-block"><b>Stronger Answer</b><span>${escapeHtml(item.strong)}</span></div>
+            <div class="meeting-block"><b>Follow-Up</b><span>${escapeHtml(item.follow)}</span></div>
+          </div>
+          <div class="actions">
+            <button class="small-btn" data-speak="${escapeHtml(item.question)}">${icons.play}Question</button>
+            <button class="small-btn" data-speak="${escapeHtml(item.short)}">${icons.play}Short</button>
+            <button class="small-btn" data-speak="${escapeHtml(item.strong)}">${icons.play}Strong</button>
+          </div>
+        </article>
+      `).join("");
+      $("meetingCards").querySelectorAll("[data-speak]").forEach((btn) => btn.addEventListener("click", () => speak(btn.dataset.speak)));
+    }
+
     function renderDaily() {
       const today = new Date();
       const start = today.getDate() % Math.max(1, terms.length - 3);
@@ -2612,6 +2972,7 @@ anthropological=人类学的
       renderFlashcard();
     });
     $("speakFlash").addEventListener("click", () => speak(filteredTerms()[state.flashIndex % filteredTerms().length].term));
+    $("shuffleMeeting").addEventListener("click", () => renderMeetingLab(shuffle(filteredMeetingScenarios())));
     $("markKnown").addEventListener("click", () => {
       const item = filteredTerms()[state.flashIndex % filteredTerms().length];
       state.known.add(item.term);
@@ -2636,6 +2997,7 @@ anthropological=人类学的
     }
     renderFlashcard();
     renderPhrases();
+    renderMeetingLab();
     renderDaily();
     renderTemplates();
     newQuiz();
