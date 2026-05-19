@@ -372,6 +372,7 @@
 
     .meeting-card {
       min-height: 0;
+      grid-column: 1 / -1;
     }
 
     .meeting-question {
@@ -450,14 +451,7 @@
     }
 
     .blueprint {
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 240px;
-      max-width: 45%;
-      opacity: .14;
-      color: var(--brand-2);
-      pointer-events: none;
+      display: none;
     }
 
     .flash-term {
@@ -2389,6 +2383,359 @@ anthropological=人类学的
       }
     ];
 
+    meetingLabScenarios.push(
+      {
+        group: "Company Intro",
+        title: "Thirty-second introduction",
+        question: "Please give us a quick introduction before the factory tour.",
+        zh: "工厂参观前，请你们先快速介绍一下。",
+        keywords: "specialized supplier, elevator fixtures, customized solutions, project support",
+        short: "We are a specialized supplier of elevator fixtures and interaction products, with experience in customized projects and overseas project support.",
+        strong: "Before the tour, I will give a short introduction. Our company focuses on elevator fixtures and interaction products, such as car operating panels, landing panels, displays, buttons, access control interfaces, and customized solutions. For overseas customers, we try to support not only production, but also engineering clarification, project coordination, quality control, and after-sales communication.",
+        follow: "During the visit, please feel free to stop me if you want to discuss a specific process or product."
+      },
+      {
+        group: "Company Intro",
+        title: "Three-minute introduction",
+        question: "Can you introduce your company and capability in more detail?",
+        zh: "你能更详细介绍公司和能力吗？",
+        keywords: "product scope, manufacturing capability, engineering, quality, coordination",
+        short: "Yes. We can explain our product scope, manufacturing process, engineering support, quality control, and project coordination.",
+        strong: "Sure. Our company is focused on elevator signalization and interaction products. Our product scope includes COPs, LOPs, hall lanterns, displays, touchscreens, buttons, access control products, and customized fixture solutions. In a project, we normally start from drawings and requirements, then confirm structure, material, finish, electrical configuration, interface, testing, packaging, and delivery. Our strength is turning customized requirements into practical production and project actions.",
+        follow: "Would you prefer a general overview first, or should we focus directly on your current project?"
+      },
+      {
+        group: "Company Intro",
+        title: "Manufacturer or trading company",
+        question: "Are you a manufacturer or a trading company?",
+        zh: "你们是制造商还是贸易公司？",
+        keywords: "manufacturer, in-house, mechanical, electronics, assembly, quality control",
+        short: "We are a manufacturer with in-house engineering, production, assembly, and quality control capability.",
+        strong: "We are a manufacturer, not just a trading company. We have in-house capabilities related to mechanical parts, electronics, assembly, testing, and quality control. For customized projects, this is important because many details need quick communication between sales, engineering, production, quality, and project management.",
+        follow: "If you are interested, I can explain which parts are produced or assembled in-house and which parts are sourced from approved suppliers."
+      },
+      {
+        group: "Company Intro",
+        title: "Overseas support",
+        question: "Do you have overseas support for customers?",
+        zh: "你们对海外客户有支持吗？",
+        keywords: "remote support, spare parts, documentation, local partner, response model",
+        short: "We can support overseas customers through remote technical support, spare parts planning, documentation, and project coordination.",
+        strong: "Our overseas support model depends on the market and project. In general, we can support customers through English documentation, remote technical clarification, spare parts recommendations, replacement solutions, quality feedback, and project coordination. For important projects, we can also discuss training, site support, or cooperation with local service resources.",
+        follow: "Could you tell us what kind of support you expect after delivery: spare parts, technical training, troubleshooting, or local service?"
+      },
+      {
+        group: "Factory Tour",
+        title: "Start factory tour",
+        question: "How do you start the factory tour professionally?",
+        zh: "怎样专业地开始工厂参观？",
+        keywords: "route, safety, process, questions, photos",
+        short: "Before we start, I will briefly explain the route, safety rules, and main processes we will visit.",
+        strong: "Before we start the factory tour, I will briefly explain the route. We will focus on the processes most relevant to elevator fixture projects, including material control, mechanical processing, electronics, glass or display-related processes, electrical assembly, final inspection, and warehousing. For safety and confidentiality reasons, some areas may have photo restrictions. Please let me know if you want to spend more time on any specific process.",
+        follow: "Is there any process you especially want to see today?"
+      },
+      {
+        group: "Factory Tour",
+        title: "SMT workshop",
+        question: "What do you do in the SMT area?",
+        zh: "SMT 区域是做什么的？",
+        keywords: "PCB, PCBA, soldering, electronic components, inspection, traceability",
+        short: "This area is for PCB assembly. It helps us control electronic quality and traceability.",
+        strong: "This is the SMT area, which is mainly related to PCB assembly. Electronic components are mounted and soldered onto circuit boards, and then the boards go through inspection and testing. For elevator fixtures, stable electronics are important because displays, buttons, access control modules, and communication interfaces all depend on reliable boards.",
+        follow: "Would you like us to explain the inspection method or traceability record for this process?"
+      },
+      {
+        group: "Factory Tour",
+        title: "Sheet metal workshop",
+        question: "Why is sheet metal important for elevator fixtures?",
+        zh: "为什么钣金对电梯部件很重要？",
+        keywords: "stainless steel, panel, bracket, back box, bending, dimensional accuracy",
+        short: "Sheet metal affects installation accuracy, appearance, and assembly fit.",
+        strong: "Sheet metal is important because many elevator fixtures use metal panels, brackets, back boxes, and installation structures. The key points are dimensional accuracy, surface quality, bending accuracy, and stable assembly fit. If the structure is not accurate, it may affect installation, appearance, button layout, or later maintenance.",
+        follow: "For your project, do you have a preferred material, thickness, or surface finish?"
+      },
+      {
+        group: "Factory Tour",
+        title: "Glass processing",
+        question: "Why do you need glass processing capability?",
+        zh: "为什么需要玻璃加工能力？",
+        keywords: "touchscreen, display, printing, tempering, bonding, appearance",
+        short: "Glass is often used in touchscreens, displays, and premium elevator panels.",
+        strong: "Glass processing is increasingly important for modern elevator fixtures, especially touchscreen COPs, multimedia displays, and premium panels. The process may include cutting, printing, tempering, bonding, and appearance inspection. Good glass processing helps improve visual quality, touch experience, and long-term reliability.",
+        follow: "Do you need standard glass, printed glass, semi-transparent glass, or a special surface effect?"
+      },
+      {
+        group: "Factory Tour",
+        title: "Cleanroom or clean area",
+        question: "Why do you need a clean production area?",
+        zh: "为什么需要洁净生产区域？",
+        keywords: "dust control, bonding, display assembly, appearance quality",
+        short: "A clean area helps reduce dust and appearance defects during bonding and display assembly.",
+        strong: "For display and touchscreen products, dust control is important. A clean production environment helps reduce contamination during bonding, assembly, and inspection. This is especially useful when the customer has high appearance requirements or when the product includes glass, display modules, and touch interfaces.",
+        follow: "Is appearance quality one of the key concerns for this project?"
+      },
+      {
+        group: "Factory Tour",
+        title: "Electrical assembly",
+        question: "What happens in the electrical assembly area?",
+        zh: "电气装配区域主要做什么？",
+        keywords: "wiring, boards, display, readers, buttons, functional test",
+        short: "We assemble boards, wiring, displays, buttons, readers, and other parts into complete fixtures.",
+        strong: "This is the electrical assembly area. Here, different components such as boards, wiring harnesses, displays, card readers, buttons, speakers, and mechanical panels are assembled into complete elevator fixtures. Before delivery, we check wiring, function, appearance, and project-specific requirements.",
+        follow: "Would you like to see how we do the functional test before shipment?"
+      },
+      {
+        group: "Factory Tour",
+        title: "Smart warehousing",
+        question: "How does smart warehousing help project delivery?",
+        zh: "智能仓储怎样帮助项目交付？",
+        keywords: "inventory, material flow, FIFO, picking accuracy, traceability",
+        short: "It improves inventory accuracy, material flow, and traceability.",
+        strong: "Smart warehousing helps us control material location, picking accuracy, inventory level, and material flow. For customized overseas projects, this is important because missing or wrong materials can delay production. Good warehousing also supports FIFO management and traceability.",
+        follow: "For your project, do you need batch traceability or specific packing requirements?"
+      },
+      {
+        group: "Product Intro",
+        title: "COP introduction",
+        question: "Can you introduce the COP solution?",
+        zh: "你能介绍一下轿厢操纵箱方案吗？",
+        keywords: "inside elevator car, floor selection, display, buttons, touchscreen, access control",
+        short: "A COP is the main user interface inside the elevator car for floor selection and special functions.",
+        strong: "This is a COP, or car operating panel. It is the main user interface inside the elevator car. Passengers use it to select floors, see elevator information, and use special functions. It can include mechanical buttons, displays, touchscreens, speakers, key switches, card readers, and service cabinets. For customized projects, we can adjust size, material, finish, layout, interface, and functions.",
+        follow: "For your project, do you prefer mechanical buttons, a touchscreen, or a combined solution?"
+      },
+      {
+        group: "Product Intro",
+        title: "LOP introduction",
+        question: "Can you introduce the landing operating panel?",
+        zh: "你能介绍一下外呼/层站面板吗？",
+        keywords: "landing floor, call elevator, display status, back box, installation",
+        short: "An LOP is installed on the landing floor for calling the elevator and showing basic status.",
+        strong: "An LOP, or landing operating panel, is the call interface on each landing floor. It is used to call the elevator and show basic status. It may include buttons, touch buttons, displays, card readers, QR code readers, and accessibility functions. For quotation, we need to confirm installation structure, back box, wall condition, size, material, and interface.",
+        follow: "Do you need flush-mounted or surface-mounted installation?"
+      },
+      {
+        group: "Product Intro",
+        title: "Hall lantern introduction",
+        question: "What is the function of a hall lantern?",
+        zh: "到站灯的功能是什么？",
+        keywords: "arrival indicator, direction, arrows, gong, visibility",
+        short: "A hall lantern helps passengers identify which elevator is arriving and its direction.",
+        strong: "A hall lantern, or arrival indicator, is usually installed near the elevator entrance. It helps passengers identify which elevator is arriving and whether it is going up or down. It can include arrows, illumination, display, sound, acrylic, glass, or metal housing. The design should match the elevator entrance and building style.",
+        follow: "Do you need only visual indication, or do you also need a gong or sound signal?"
+      },
+      {
+        group: "Product Intro",
+        title: "Display introduction",
+        question: "Can your display show different content?",
+        zh: "你们的显示器能显示不同内容吗？",
+        keywords: "floor position, direction, status, messages, multimedia, remote update",
+        short: "Yes. Depending on the version, it can show floor position, direction, status, messages, or multimedia content.",
+        strong: "The display can show floor position, direction, elevator status, text messages, images, or multimedia content, depending on the product version and system configuration. Some versions may support remote updates if the network and system conditions allow it. Standalone versions may use USB or local update methods.",
+        follow: "What content do you need to display, and how often do you need to update it?"
+      },
+      {
+        group: "Product Intro",
+        title: "Touchscreen COP",
+        question: "Can you customize the touchscreen UI?",
+        zh: "触摸屏 UI 可以定制吗？",
+        keywords: "UI, floor display, icons, language, layout, access control",
+        short: "Yes. We can customize the UI after confirming layout, language, icons, and function requirements.",
+        strong: "Yes. For a touchscreen COP, the UI can usually be customized based on project requirements. We need to confirm screen size, resolution, floor display, button layout, icons, language, background, access control functions, and any special information to be shown. For a formal project, we recommend confirming a UI mockup before sample production.",
+        follow: "Do you already have a UI reference, or should we prepare an initial proposal?"
+      },
+      {
+        group: "Product Intro",
+        title: "Destination control",
+        question: "Do you support destination control terminals?",
+        zh: "你们支持目的层终端吗？",
+        keywords: "destination input, lobby, grouping, dispatching, controller integration",
+        short: "We can support destination input terminals depending on controller integration and protocol requirements.",
+        strong: "Destination control terminals are used for passengers to select the destination floor before entering the elevator. The feasibility depends on controller integration, protocol, signal definition, and project functions. The product may include touchscreen input, card or QR access, accessibility buttons, and customized interface design.",
+        follow: "Please share the controller interface and expected functions so we can review feasibility."
+      },
+      {
+        group: "Product Intro",
+        title: "Access control",
+        question: "Can the product integrate access control?",
+        zh: "产品能集成门禁吗？",
+        keywords: "IC card, QR code, face recognition, permission, building system",
+        short: "Yes, access control can be considered based on interface, permission logic, and project requirements.",
+        strong: "Access control can be integrated depending on the project. Common options include IC card, QR code, face recognition, or other authentication methods. The key is to confirm how floor permission is managed, whether it connects to the building access system, what happens if the network is down, and what interface the elevator controller supports.",
+        follow: "Could you explain your access control logic and floor permission requirements?"
+      },
+      {
+        group: "Technical Questions",
+        title: "Controller compatibility",
+        question: "Is it compatible with our elevator controller?",
+        zh: "它和我们的电梯控制器兼容吗？",
+        keywords: "wiring diagram, signal, protocol, controller, test",
+        short: "We need to check the wiring diagram, signal definition, and protocol before confirming compatibility.",
+        strong: "Compatibility cannot be confirmed only by product name. We need to check the controller interface, wiring diagram, signal definition, voltage, communication protocol, and expected functions. If possible, we also recommend a sample test or joint technical review before mass production.",
+        follow: "Could you send the wiring diagram and protocol document for our engineering review?"
+      },
+      {
+        group: "Technical Questions",
+        title: "RS485 or CAN",
+        question: "Do you support RS485 or CAN communication?",
+        zh: "你们支持 RS485 或 CAN 通信吗？",
+        keywords: "RS485, CAN, protocol, command, function list, review",
+        short: "We can evaluate RS485, CAN, or other interfaces after reviewing the protocol document.",
+        strong: "RS485 and CAN can be evaluated, but the key point is not only the physical interface. We also need the communication protocol, command list, data format, function requirements, and test conditions. After reviewing these documents, our engineering team can confirm whether adaptation or development is required.",
+        follow: "Can you share the protocol document and the required function list?"
+      },
+      {
+        group: "Technical Questions",
+        title: "Remote update",
+        question: "Can the display content be updated remotely?",
+        zh: "显示内容可以远程更新吗？",
+        keywords: "network version, standalone version, USB, content management",
+        short: "For network versions, remote update may be possible. For standalone versions, USB update may be used.",
+        strong: "Remote update depends on product version, software design, network availability, and customer IT requirements. If the product is a network version, content may be updated remotely through a management system. If it is a standalone version, USB or local update may be more suitable.",
+        follow: "Do you need centralized content management, or is local update acceptable?"
+      },
+      {
+        group: "Technical Questions",
+        title: "Modernization",
+        question: "Can this be used for modernization projects?",
+        zh: "这个能用于改造项目吗？",
+        keywords: "site condition, existing opening, wiring, controller, retrofit",
+        short: "Yes, but we need to check the existing site condition and interface.",
+        strong: "Many solutions can be adapted for modernization, but we need to review the existing opening size, installation structure, wiring, controller interface, power supply, and appearance requirements. Modernization often has more constraints than new projects, so early clarification is important.",
+        follow: "Can you provide photos of the existing panel and site dimensions?"
+      },
+      {
+        group: "Commercial Questions",
+        title: "MOQ",
+        question: "What is your MOQ?",
+        zh: "你们的最小起订量是多少？",
+        keywords: "product type, material, customization, tooling, stock",
+        short: "MOQ depends on product type, material, and customization level.",
+        strong: "MOQ is not the same for every product. It depends on product type, material, surface finish, customized components, tooling, and whether the item is standard or project-specific. After confirming the exact configuration, we can check whether a lower quantity is possible for sample or pilot projects.",
+        follow: "Is this for sample testing, a pilot project, or mass production?"
+      },
+      {
+        group: "Commercial Questions",
+        title: "Target price",
+        question: "Can you meet our target price?",
+        zh: "你们能做到我们的目标价吗？",
+        keywords: "target price, scope, quantity, options, cost-down",
+        short: "We can review the target price after confirming scope, quantity, and key requirements.",
+        strong: "We can review your target price seriously, but we need to understand the scope behind it. If the target is difficult under the current configuration, we can discuss cost-down options such as material change, function adjustment, quantity improvement, packaging optimization, or delivery scope adjustment.",
+        follow: "Could you share the target price together with the required scope and annual volume?"
+      },
+      {
+        group: "Commercial Questions",
+        title: "Annual price agreement",
+        question: "Can you support an annual price agreement?",
+        zh: "你们能支持年度价格协议吗？",
+        keywords: "annual forecast, volume, validity, material fluctuation, review mechanism",
+        short: "It may be possible if we have a clear annual forecast and review mechanism.",
+        strong: "An annual price agreement can be discussed if the product scope, annual forecast, delivery plan, and payment terms are clear. Because material cost and exchange rate may change, we may need a price validity period or review mechanism. The more stable the forecast, the easier it is to support better pricing.",
+        follow: "Could you provide the expected annual quantity and delivery schedule?"
+      },
+      {
+        group: "Commercial Questions",
+        title: "Urgent delivery",
+        question: "How do you handle urgent delivery?",
+        zh: "紧急交付你们怎么处理？",
+        keywords: "priority, material, production slot, partial shipment, risk",
+        short: "We first check material availability and production capacity, then decide if priority or partial shipment is possible.",
+        strong: "For urgent delivery, we need to check which items are urgent, whether materials are available, whether drawings are approved, and whether production slots can be adjusted. If the full order cannot be accelerated, we may consider partial shipment, priority items, or a recovery plan with realistic dates.",
+        follow: "Which items are critical for your site, and what is the latest acceptable arrival date?"
+      },
+      {
+        group: "Quality Questions",
+        title: "Quality control system",
+        question: "How do you control product quality?",
+        zh: "你们如何控制产品质量？",
+        keywords: "incoming inspection, process inspection, functional test, appearance check, final inspection",
+        short: "We control quality through incoming inspection, process checks, function tests, appearance checks, and final inspection.",
+        strong: "Quality control is not only a final check. It starts from incoming material inspection, then process inspection, functional testing, appearance checking, packaging review, and final inspection before shipment. For customized projects, we also pay attention to drawings, configuration, wiring, labeling, and project-specific requirements.",
+        follow: "Do you have a specific inspection standard or quality document you want us to follow?"
+      },
+      {
+        group: "Quality Questions",
+        title: "Batch issue",
+        question: "How do you handle batch quality issues?",
+        zh: "批量质量问题怎么处理？",
+        keywords: "containment, root cause, affected batch, corrective action, report",
+        short: "We first contain the issue, identify the affected batch, analyze root cause, and define corrective action.",
+        strong: "For a batch issue, the first step is containment: stop further shipment if necessary and identify the affected batch. Then we collect evidence, check production and inspection records, analyze root cause, and define corrective and preventive actions. If the customer requires it, we can provide a structured report.",
+        follow: "Could you share the failure rate, affected quantity, batch number, and failure photos?"
+      },
+      {
+        group: "Quality Questions",
+        title: "Traceability",
+        question: "Can you trace each product or batch?",
+        zh: "你们能追溯每个产品或批次吗？",
+        keywords: "serial number, batch, material record, inspection record, shipment record",
+        short: "Traceability can usually be done through serial number, batch records, inspection records, and shipment information.",
+        strong: "Traceability depends on product type and project requirements. In general, we can trace key information such as batch, material record, production process, inspection result, and shipment record. For important overseas projects, we recommend defining traceability requirements before production.",
+        follow: "Do you need product-level traceability or batch-level traceability?"
+      },
+      {
+        group: "After-Sales",
+        title: "Failure after installation",
+        question: "What should we do if there is a failure after installation?",
+        zh: "安装后出现故障怎么办？",
+        keywords: "photos, videos, serial number, wiring, site condition, failure description",
+        short: "Please share photos, videos, serial number, wiring condition, and failure description.",
+        strong: "If there is a failure after installation, please do not replace parts randomly at first. We need photos, videos, serial number, wiring condition, installation environment, and a clear failure description. This helps us judge whether the issue is product-related, installation-related, transportation-related, or controller-interface-related.",
+        follow: "Can you send a short video showing the failure and the product label?"
+      },
+      {
+        group: "After-Sales",
+        title: "Replacement discontinued part",
+        question: "Can you replace an old discontinued part?",
+        zh: "旧的停产件能替代吗？",
+        keywords: "old part, size, function, interface, retrofit, replacement solution",
+        short: "We can evaluate the old part's size, function, and interface, then propose a replacement or retrofit solution.",
+        strong: "For discontinued parts, we need to understand the original size, installation method, function, wiring, interface, appearance, and site constraints. Sometimes direct replacement is possible; sometimes we need a retrofit solution or a modified structure. We should avoid promising compatibility before checking the details.",
+        follow: "Please send photos, dimensions, wiring information, and the function description of the old part."
+      },
+      {
+        group: "Meeting Control",
+        title: "When you do not understand",
+        question: "What should you say when you do not understand the customer's accent?",
+        zh: "听不懂客户口音时怎么说？",
+        keywords: "repeat, slower, key point, confirm understanding, polite",
+        short: "Sorry, could you say that again a little more slowly?",
+        strong: "Sorry, I did not catch the last point clearly. Could you say it again a little more slowly? I want to make sure I understand correctly before I answer. My current understanding is that you are asking about the interface and delivery risk. Is that right?",
+        follow: "Let me write down the key words: interface, delivery risk, and sample approval. Did I miss anything?"
+      },
+      {
+        group: "Meeting Control",
+        title: "When customer interrupts",
+        question: "What should you do if the customer interrupts your presentation?",
+        zh: "客户打断你的介绍时怎么办？",
+        keywords: "pause, answer first, return to agenda, parking lot",
+        short: "No problem. Let me answer this first, then we can come back to the agenda.",
+        strong: "No problem, this is an important question. Let me answer it briefly first. If we need more details, I will mark it as an open point and we can discuss it in the technical section. After that, I will return to the agenda so we do not miss the other topics.",
+        follow: "Would you like a quick answer now, or should we discuss this in detail later?"
+      },
+      {
+        group: "Meeting Control",
+        title: "When answer needs internal review",
+        question: "How do you avoid giving a wrong answer?",
+        zh: "怎样避免当场答错？",
+        keywords: "not accurate, confirm internally, responsible engineer, written reply",
+        short: "I need to confirm this internally before giving a final answer.",
+        strong: "This point is important, and I do not want to give you an inaccurate answer. I will confirm it internally with the responsible engineer and send you a written reply after the meeting. For now, I will record it as an open point with an owner and target date.",
+        follow: "Could you also send the exact condition so we check it under the right scenario?"
+      },
+      {
+        group: "Meeting Control",
+        title: "End with action items",
+        question: "How do you end a meeting with clear next steps?",
+        zh: "怎样用清楚的下一步结束会议？",
+        keywords: "recap, confirmed points, open points, owners, deadlines, documents",
+        short: "Let me summarize the confirmed points, open points, owners, and target dates.",
+        strong: "Before we close, I would like to summarize the next actions. First, the customer will send drawings, quantity forecast, and protocol documents. Second, our team will review feasibility, quotation basis, and preliminary timeline. Third, both sides will confirm open points before the next meeting. I will send a written recap so everyone has the same understanding.",
+        follow: "Please let me know if any point is missing or if the owner should be changed."
+      }
+    );
+
     Object.keys(phraseGroups).forEach((key) => delete phraseGroups[key]);
     Object.assign(phraseGroups, {
       "Meetings": [
@@ -2444,7 +2791,15 @@ anthropological=人类学的
         ["The lead time depends on drawing approval, material availability, and production capacity.", "交期取决于图纸确认、物料可得性和产能。"],
         ["Please share the protocol document so our technical team can review feasibility.", "请提供协议文件，以便我们的技术团队评估可行性。"],
         ["Before we close, let me summarize the open points, owners, and next actions.", "会议结束前，我总结一下未关闭事项、负责人和下一步行动。"],
-        ["My understanding is that your main concern is delivery risk. Is that correct?", "我的理解是你们主要担心交付风险，对吗？"]
+        ["My understanding is that your main concern is delivery risk. Is that correct?", "我的理解是你们主要担心交付风险，对吗？"],
+        ["Before the factory tour, I will briefly explain the route, safety rules, and the main processes we will visit.", "工厂参观前，我会简要说明路线、安全规则和我们将参观的主要流程。"],
+        ["This process is important because it improves traceability, consistency, and early problem detection.", "这个流程很重要，因为它提升可追溯性、一致性和早期问题发现能力。"],
+        ["For customized products, we need to confirm size, material, finish, layout, wiring, interface, and function configuration.", "对于定制产品，我们需要确认尺寸、材料、表面处理、布局、接线、接口和功能配置。"],
+        ["If the full lead time cannot be shortened, we can discuss partial shipment or priority items.", "如果整体交期无法缩短，我们可以讨论分批发货或优先项目。"],
+        ["Please do not compare only the unit price; we need to compare material, configuration, testing, packaging, warranty, and service scope.", "请不要只比较单价；我们需要比较材料、配置、测试、包装、质保和服务范围。"],
+        ["If I miss your point because of the accent or speed, I will repeat my understanding and ask you to confirm.", "如果因为口音或语速我漏掉了重点，我会复述我的理解并请你确认。"],
+        ["For a discontinued part, we should check the old size, function, wiring, interface, and site constraints before promising replacement.", "对于停产件，我们应先检查旧尺寸、功能、接线、接口和现场限制，再承诺替代。"],
+        ["After the meeting, I will send a written recap with confirmed points, open points, owners, and target dates.", "会后我会发送书面纪要，包含已确认事项、未关闭事项、负责人和目标日期。"]
       ],
       "个人日常使用": [
         ["This was sent by the client, and we need to review it internally first.", "这是客户发来的，我们需要先内部审阅。"],
