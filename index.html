@@ -2955,6 +2955,12 @@ anthropological=人类学的
       $("prevFlash").style.opacity = state.flashHistory.length === 0 ? ".55" : "1";
     }
 
+    function speakCurrentFlashcard() {
+      const list = filteredTerms();
+      if (!list.length) return;
+      speak(list[state.flashIndex % list.length].term);
+    }
+
     function chooseNextFlashIndex() {
       const list = filteredTerms();
       if (list.length <= 1) return 0;
@@ -3319,14 +3325,16 @@ anthropological=人类学的
       if (!state.flashHistory.length) return;
       state.flashIndex = state.flashHistory.pop();
       renderFlashcard();
+      speakCurrentFlashcard();
     });
     $("nextFlash").addEventListener("click", () => {
       state.flashHistory.push(state.flashIndex);
       if (state.flashHistory.length > 100) state.flashHistory.shift();
       state.flashIndex = chooseNextFlashIndex();
       renderFlashcard();
+      speakCurrentFlashcard();
     });
-    $("speakFlash").addEventListener("click", () => speak(filteredTerms()[state.flashIndex % filteredTerms().length].term));
+    $("speakFlash").addEventListener("click", speakCurrentFlashcard);
     $("shuffleMeeting").addEventListener("click", () => renderMeetingLab(shuffle(filteredMeetingScenarios())));
     $("markKnown").addEventListener("click", () => {
       const item = filteredTerms()[state.flashIndex % filteredTerms().length];
